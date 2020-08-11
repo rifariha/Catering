@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, ScrollView}
 import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
 
-const register = (props) => {
+const register = ({navigation}) => {
     return (
         <ScrollView>
         <View style={styles.bigContainer}>
@@ -28,7 +28,7 @@ const register = (props) => {
                     </TouchableOpacity>
                 </View>
                     <Text style={styles.registerTxt}> Sudah punya akun ? 
-                    <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                         <Text style={styles.register}> Login disini </Text> 
                     </TouchableOpacity>
                     </Text>
@@ -42,7 +42,7 @@ export default register
 
 const styles = StyleSheet.create({
     bigContainer: {
-        resizeMode: 'cover', // or 'stretch'
+        resizeMode: 'cover',
     },
     container: {
         marginVertical:70,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
     registerTxt : {
         marginVertical:5,
-        textAlign:'center'
+        textAlign:'center',
     },
     register : {
         color:'orange',

@@ -4,7 +4,7 @@ import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
 
 
-const login = (props) => {
+const login = ({navigation}) => {
     return (
         <View style={styles.bigContainer}>
         <Image style= { styles.backgroundImage } source={bgImage}>
@@ -27,7 +27,7 @@ const login = (props) => {
                     </TouchableOpacity>
                 </View>
                     <Text style={styles.registerTxt}> Tidak punya akun ? 
-                    <TouchableOpacity onPress={() => props.navigation.navigate('Register')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                         <Text style={styles.register}> Daftar disini </Text> 
                     </TouchableOpacity>
                     </Text>
