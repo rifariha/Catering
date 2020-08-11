@@ -1,14 +1,13 @@
 import React from 'react'
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Button} from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, ScrollView} from 'react-native'
 import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
 
-
-const login = (props) => {
+const register = (props) => {
     return (
+        <ScrollView>
         <View style={styles.bigContainer}>
-        <Image style= { styles.backgroundImage } source={bgImage}>
-      </Image>
+        <Image style= { styles.backgroundImage } source={bgImage}></Image>
             <View style={styles.container} > 
                 <View style={{flexDirection:'row'}}>
                     <Image source={logo} style={styles.logo}></Image>
@@ -18,25 +17,28 @@ const login = (props) => {
                     </View>
                 </View>     
                 <View style={styles.card}>
-                    <Text style={styles.textHeader}>Silahkan Login</Text>
+                    <Text style={styles.textHeader}>Registrasi</Text>
+                    <TextInput style={styles.textInput} placeholder={'Nama'}></TextInput>
                     <TextInput style={styles.textInput} placeholder={'Email'}></TextInput>
                     <TextInput style={styles.textInput} placeholder={'Password'} secureTextEntry={true}></TextInput>
-                    {/* <Button title="Login" onPress={() => alert('Mau daftar ya')} style={styles.buttonWrapper}></Button> */}
+                    <TextInput style={styles.textInput} placeholder={'Ulangi Password'} secureTextEntry={true}></TextInput>
+                    <TextInput style={styles.textInput} placeholder={'Alamat'}></TextInput>
                     <TouchableOpacity style={styles.buttonWrapper}>
-                    <Text style={styles.submitBtn}>Login</Text>
+                    <Text style={styles.submitBtn}>Submit</Text>
                     </TouchableOpacity>
                 </View>
-                    <Text style={styles.registerTxt}> Tidak punya akun ? 
-                    <TouchableOpacity onPress={() => props.navigation.navigate('Register')}>
-                        <Text style={styles.register}> Daftar disini </Text> 
+                    <Text style={styles.registerTxt}> Sudah punya akun ? 
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+                        <Text style={styles.register}> Login disini </Text> 
                     </TouchableOpacity>
                     </Text>
             </View>
         </View>
+        </ScrollView>
     )
 }
 
-export default login
+export default register
 
 const styles = StyleSheet.create({
     bigContainer: {
