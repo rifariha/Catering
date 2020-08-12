@@ -1,4 +1,4 @@
-import React from 'react'
+import React , {useState} from 'react'
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Button} from 'react-native'
 import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
@@ -11,6 +11,9 @@ const userInfo = {username:'admin',password:'12345'}
 // }
 
 const login = ({navigation}) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     return (
         <View style={styles.bigContainer}>
         <Image style= { styles.backgroundImage } source={bgImage}>
@@ -26,11 +29,14 @@ const login = ({navigation}) => {
                 <View style={styles.card}>
                     <Text style={styles.textHeader}>Silahkan Login</Text>
                     <TextInput style={styles.textInput} placeholder='Email' 
+                    value={email} onChangeText={(username) => setEmail(username)}
                     // value={this.state.username} onChangeText={(username) => this.setState({username})}
                     ></TextInput>
                     <TextInput style={styles.textInput} placeholder='Password' 
+                    value={password} onChangeText={(password) => setPassword(password)}
                     // value={this.state.password} onChangeText={(password) => this.setState({password})} 
                     secureTextEntry={true}></TextInput>
+                    {/* {password.length < 4 ? <Text>Password harus setidaknya 4 karakter</Text> : null} */}
                     {/* <Button title="Login" onPress={() => alert('Mau daftar ya')} style={styles.buttonWrapper}></Button> */}
                     <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate('Menu')}>
                     <Text style={styles.submitBtn}>Login</Text>

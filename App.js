@@ -14,7 +14,7 @@ const navigator = createStackNavigator(
   },
   {
     headerMode:'none',
-    initialRouteName:'Menu',
+    initialRouteName:'Login',
     defaultNavigationOpions : {
       title: ''
     } 
