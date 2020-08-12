@@ -3,6 +3,12 @@ import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Button} fro
 import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
 
+const userInfo = {username:'admin',password:'12345'}
+
+// constructor(props){
+//     super(props);
+//     this.state = {username:'',password:''}
+// }
 
 const login = ({navigation}) => {
     return (
@@ -19,10 +25,14 @@ const login = ({navigation}) => {
                 </View>     
                 <View style={styles.card}>
                     <Text style={styles.textHeader}>Silahkan Login</Text>
-                    <TextInput style={styles.textInput} placeholder={'Email'}></TextInput>
-                    <TextInput style={styles.textInput} placeholder={'Password'} secureTextEntry={true}></TextInput>
+                    <TextInput style={styles.textInput} placeholder='Email' 
+                    // value={this.state.username} onChangeText={(username) => this.setState({username})}
+                    ></TextInput>
+                    <TextInput style={styles.textInput} placeholder='Password' 
+                    // value={this.state.password} onChangeText={(password) => this.setState({password})} 
+                    secureTextEntry={true}></TextInput>
                     {/* <Button title="Login" onPress={() => alert('Mau daftar ya')} style={styles.buttonWrapper}></Button> */}
-                    <TouchableOpacity style={styles.buttonWrapper}>
+                    <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate('Menu')}>
                     <Text style={styles.submitBtn}>Login</Text>
                     </TouchableOpacity>
                 </View>
@@ -40,7 +50,7 @@ export default login
 
 const styles = StyleSheet.create({
     bigContainer: {
-        resizeMode: 'cover', // or 'stretch'
+        resizeMode: 'contain', // or 'stretch'
     },
     container: {
         marginVertical:70,
