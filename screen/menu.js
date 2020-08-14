@@ -1,14 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Food from './components/food'
-import { ScrollView, FlatList } from 'react-native-gesture-handler'
-const menu = () => {
+import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler'
+const menu = ({navigation}) => {
     return (
         <View>
         <Text style={styles.textStyle}>Menu Hari Ini</Text>
         <ScrollView>
             <View style={styles.container}>
-                <Food nama='Soto Ayam' gambar='https://awsimages.detik.net.id/community/media/visual/2020/01/20/dab49f82-0ba0-4986-b834-fe6dba66bc52.jpeg?w=700&q=90'></Food>
+                <TouchableOpacity onPress={() => navigation.navigate('DetailMenu')}>
+                    <Food nama='Soto Ayam' gambar='https://awsimages.detik.net.id/community/media/visual/2020/01/20/dab49f82-0ba0-4986-b834-fe6dba66bc52.jpeg?w=700&q=90'></Food>
+                </TouchableOpacity>
                 <Food nama='Sambal Ikan Dencis' gambar='https://img-global.cpcdn.com/recipes/714aeff14f019f83/751x532cq70/sambal-ikan-kembung-foto-resep-utama.jpg'></Food>
                 <Food nama='Rendang' gambar='https://i0.wp.com/resepkoki.id/wp-content/uploads/2017/11/Resep-Rendang-padang.jpg?fit=2837%2C3283&ssl=1'></Food>
                 <Food nama='Mie Goreng' gambar='https://lh3.googleusercontent.com/proxy/pRQPIwzjipBIhsBcc-U1A6bVSb6obrvY5GqvQUDKbX8wm_1CnOkuKJi4S7W-elar3-rwTVcvOPBzsaQ2Bwk3IZpZjnJOiXCRUSHHyClThN0wfIX_UFfn81LpmDSddZA'></Food>

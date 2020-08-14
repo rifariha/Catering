@@ -1,9 +1,16 @@
-import React from 'react'
+import React , {useState, useContext} from 'react'
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, ScrollView} from 'react-native'
 import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
+import { Context as AuthContext} from './context/AuthContext'
 
 const register = ({navigation}) => {
+    const {state, signup} = useContext(AuthContext)
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordConfirmation, setPasswordConfirmation] = useState('')
+    const [address, setAddress] = useState('')
     return (
         <ScrollView>
         <View style={styles.bigContainer}>
@@ -18,17 +25,27 @@ const register = ({navigation}) => {
                 </View>     
                 <View style={styles.card}>
                     <Text style={styles.textHeader}>Registrasi</Text>
-                    <TextInput style={styles.textInput} placeholder={'Nama'}></TextInput>
-                    <TextInput style={styles.textInput} placeholder={'Email'}></TextInput>
-                    <TextInput style={styles.textInput} placeholder={'Password'} secureTextEntry={true}></TextInput>
-                    <TextInput style={styles.textInput} placeholder={'Ulangi Password'} secureTextEntry={true}></TextInput>
-                    <TextInput style={styles.textInput} placeholder={'Alamat'}></TextInput>
+                    <TextInput style={styles.textInput} placeholder='Nama'
+                    value={name} onChangeText={setName} autoCapitalize='none' autoCorrect={false}
+                        ></TextInput>
+                    <TextInput style={styles.textInput} placeholder='Email'
+                    value={email} onChangeText={setEmail} autoCapitalize='none' autoCorrect={false}
+                    ></TextInput>
+                    <TextInput style={styles.textInput} placeholder='Password' secureTextEntry={true}
+                    value={password} onChangeText={setPassword} autoCapitalize='none' autoCorrect={false} secureTextEntry={true}
+                    ></TextInput>
+                    <TextInput style={styles.textInput} placeholder='Ulangi Password' secureTextEntry={true}
+                    value={passwordConfirmation} onChangeText={setPasswordConfirmation} autoCapitalize='none' autoCorrect={false} secureTextEntry={true}
+                    ></TextInput>
+                    <TextInput style={styles.textAreaInput} placeholder='Alamat'
+                    value={address} onChangeText={setAddress} autoCapitalize='none' autoCorrect={false}
+                    ></TextInput>
                     <TouchableOpacity style={styles.buttonWrapper}>
-                    <Text style={styles.submitBtn}>Submit</Text>
+                        <Text style={styles.submitBtn}>Submit</Text>
                     </TouchableOpacity>
                 </View>
                     <Text style={styles.registerTxt}> Sudah punya akun ? 
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
                         <Text style={styles.register}> Login disini </Text> 
                     </TouchableOpacity>
                     </Text>
@@ -37,6 +54,12 @@ const register = ({navigation}) => {
         </ScrollView>
     )
 }
+
+register.navigationOptions = () =>{
+    return {
+        header: () => false
+    };
+};
 
 export default register
 
@@ -89,6 +112,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         margin:15,
         height:50,
+        borderRadius:5,
+    },
+    textAreaInput : {
+        fontSize: 13,
+        color:'#000',
+        paddingHorizontal:10,
+        paddingVertical:0,
+        fontFamily:'Raleway-Bold',
+        borderColor: 'grey',
+        borderWidth: 1,
+        margin:15,
+        height:80,
         borderRadius:5,
     },
     buttonWrapper : {

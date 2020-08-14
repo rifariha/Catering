@@ -1,16 +1,12 @@
-import React , {useState} from 'react'
+import React , {useState, useContext} from 'react'
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Button} from 'react-native'
 import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
+import { Context as AuthContext} from './context/AuthContext'
 
-const userInfo = {username:'admin',password:'12345'}
-
-// constructor(props){
-//     super(props);
-//     this.state = {username:'',password:''}
-// }
 
 const login = ({navigation}) => {
+    const {state, signin} = useContext(AuthContext)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -29,21 +25,24 @@ const login = ({navigation}) => {
                 <View style={styles.card}>
                     <Text style={styles.textHeader}>Silahkan Login</Text>
                     <TextInput style={styles.textInput} placeholder='Email' 
-                    value={email} onChangeText={(username) => setEmail(username)}
+                    value={email} onChangeText={setEmail} autoCorrect={false}
+                    // value={email} onChangeText={(username) => setEmail(username)}
                     // value={this.state.username} onChangeText={(username) => this.setState({username})}
                     ></TextInput>
                     <TextInput style={styles.textInput} placeholder='Password' 
-                    value={password} onChangeText={(password) => setPassword(password)}
+                    value={password} onChangeText={setPassword}  autoCorrect={false}
+                    // value={password} onChangeText={(password) => setPassword(password)}
                     // value={this.state.password} onChangeText={(password) => this.setState({password})} 
                     secureTextEntry={true}></TextInput>
                     {/* {password.length < 4 ? <Text>Password harus setidaknya 4 karakter</Text> : null} */}
                     {/* <Button title="Login" onPress={() => alert('Mau daftar ya')} style={styles.buttonWrapper}></Button> */}
-                    <TouchableOpacity style={styles.buttonWrapper} onPress={() => navigation.navigate('Menu')}>
+                    <TouchableOpacity style={styles.buttonWrapper} onPress={() => signin({email, password})}>
                     <Text style={styles.submitBtn}>Login</Text>
                     </TouchableOpacity>
+                    {state.errorMessage ? (<Text style={styles.error}>{state.errorMessage}</Text>) : null}
                 </View>
                     <Text style={styles.registerTxt}> Tidak punya akun ? 
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
                         <Text style={styles.register}> Daftar disini </Text> 
                     </TouchableOpacity>
                     </Text>
@@ -51,6 +50,12 @@ const login = ({navigation}) => {
         </View>
     )
 }
+
+login.navigationOptions = () =>{
+    return {
+        header: () => false
+    };
+};
 
 export default login
 
@@ -132,5 +137,11 @@ const styles = StyleSheet.create({
         width: 200, 
         height: 200, 
         justifyContent:'center'
+    },
+    error : {
+        padding:10,
+        margin:10, 
+        color:'red',
+        textAlign:"center"
     },
 })
