@@ -40,9 +40,10 @@ const register = ({navigation}) => {
                     <TextInput style={styles.textAreaInput} placeholder='Alamat'
                     value={address} onChangeText={setAddress} autoCapitalize='none' autoCorrect={false}
                     ></TextInput>
-                    <TouchableOpacity style={styles.buttonWrapper}>
+                    <TouchableOpacity style={styles.buttonWrapper} onPress={() => signup({name, email, password,passwordConfirmation, address})}>
                         <Text style={styles.submitBtn}>Submit</Text>
                     </TouchableOpacity>
+                    {state.errorMessage ? (<Text style={styles.error}>{state.errorMessage}</Text>) : null}
                 </View>
                     <Text style={styles.registerTxt}> Sudah punya akun ? 
                     <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
@@ -153,5 +154,11 @@ const styles = StyleSheet.create({
         width: 200, 
         height: 200, 
         justifyContent:'center'
+    },
+    error : {
+        padding:10,
+        margin:10, 
+        color:'red',
+        textAlign:"center"
     },
 })

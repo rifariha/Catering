@@ -15,17 +15,35 @@ const authReducer = (state, action) => {
 };
 
 
-const signup = (dispatch) => {
-    return ({ email, password }) => {
-        //make api request
+const signup = (dispatch) =>  async({ email, name, password, passwordConfirmation, address }) => {
+
+    if(password !== passwordConfirmation)
+    {
+        dispatch({ type: 'add_error', payload: 'Password yang anda masukan tidak sama' })
     }
+
+    try {
+        // const response = await api.post('/login', { email, password });
+        // console.log(response.data.data.nama);
+        console.log('wdwdwd')
+        // await AsyncStorage.setItem('name', response.data.data.nama);
+        // await AsyncStorage.getItem('name');
+        // dispatch({ type: 'signin', payload: response.data.data.nama});
+        // navigate('Menu');
+    } catch (error) {
+
+        console.log(error);
+        dispatch({ type: 'add_error', payload: 'Kesalahan dalam pendaftaran, silahkan coba lagi' })
+    }
+
+
 }
 
 const signin = (dispatch) => async ({ email, password }) => {
     //make api request
     try {
         const response = await api.post('/login', { email, password });
-        console.log(response.data.data.nama);
+        // console.log(response.data.data.nama);
         // console.log('wdwdwd')
         await AsyncStorage.setItem('name', response.data.data.nama);
         await AsyncStorage.getItem('name');
