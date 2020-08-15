@@ -11,6 +11,7 @@ const register = ({navigation}) => {
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [address, setAddress] = useState('')
+    const [phone, setPhone] = useState('')
     return (
         <ScrollView>
         <View style={styles.bigContainer}>
@@ -29,7 +30,7 @@ const register = ({navigation}) => {
                     value={name} onChangeText={setName} autoCapitalize='none' autoCorrect={false}
                         ></TextInput>
                     <TextInput style={styles.textInput} placeholder='Email'
-                    value={email} onChangeText={setEmail} autoCapitalize='none' autoCorrect={false}
+                    value={email} onChangeText={setEmail} keyboardType='email-address' autoCapitalize='none' autoCorrect={false}
                     ></TextInput>
                     <TextInput style={styles.textInput} placeholder='Password' secureTextEntry={true}
                     value={password} onChangeText={setPassword} autoCapitalize='none' autoCorrect={false} secureTextEntry={true}
@@ -37,10 +38,13 @@ const register = ({navigation}) => {
                     <TextInput style={styles.textInput} placeholder='Ulangi Password' secureTextEntry={true}
                     value={passwordConfirmation} onChangeText={setPasswordConfirmation} autoCapitalize='none' autoCorrect={false} secureTextEntry={true}
                     ></TextInput>
+                    <TextInput style={styles.textInput} placeholder='No Hp'
+                    value={phone} onChangeText={setPhone} keyboardType='numeric' maxLength={12} autoCapitalize='none' autoCorrect={false}
+                    ></TextInput>
                     <TextInput style={styles.textAreaInput} placeholder='Alamat'
                     value={address} onChangeText={setAddress} autoCapitalize='none' autoCorrect={false}
                     ></TextInput>
-                    <TouchableOpacity style={styles.buttonWrapper} onPress={() => signup({name, email, password,passwordConfirmation, address})}>
+                    <TouchableOpacity style={styles.buttonWrapper} onPress={() => signup({name, email, password,passwordConfirmation, address, phone})}>
                         <Text style={styles.submitBtn}>Submit</Text>
                     </TouchableOpacity>
                     {state.errorMessage ? (<Text style={styles.error}>{state.errorMessage}</Text>) : null}

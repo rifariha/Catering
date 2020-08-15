@@ -9,27 +9,24 @@ const authReducer = (state, action) => {
             return { ...state, errorMessage: action.payload }
         case 'signin':
             return { errorMessage: '', name: action.payload }
+        case 'signup':
+            return { ...state, registerSuccess: action.payload, errorMessage: '' }
         default:
             return state;
     }
 };
 
 
-const signup = (dispatch) =>  async({ email, name, password, passwordConfirmation, address }) => {
+const signup = (dispatch) => async ({ email, name, password, passwordConfirmation, address, phone}) => {
 
-    if(password !== passwordConfirmation)
-    {
+    if (password !== passwordConfirmation) {
         dispatch({ type: 'add_error', payload: 'Password yang anda masukan tidak sama' })
     }
-
     try {
-        // const response = await api.post('/login', { email, password });
-        // console.log(response.data.data.nama);
-        console.log('wdwdwd')
-        // await AsyncStorage.setItem('name', response.data.data.nama);
-        // await AsyncStorage.getItem('name');
-        // dispatch({ type: 'signin', payload: response.data.data.nama});
-        // navigate('Menu');
+        const response = await api.post('/register', { email, password, phone, address, name});
+        console.log(response.data);
+        dispatch({ type: 'signup', payload: 'Pendaftaran Berhasil, silahkan login' });
+        navigate('Signin');
     } catch (error) {
 
         console.log(error);
@@ -47,7 +44,7 @@ const signin = (dispatch) => async ({ email, password }) => {
         // console.log('wdwdwd')
         await AsyncStorage.setItem('name', response.data.data.nama);
         await AsyncStorage.getItem('name');
-        dispatch({ type: 'signin', payload: response.data.data.nama});
+        dispatch({ type: 'signin', payload: response.data.data.nama });
         navigate('Menu');
     } catch (error) {
 
@@ -66,5 +63,5 @@ const signout = (dispatch) => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     { signin, signout, signup },
-    { name: null, errorMessage: '' }
+    { name: null, errorMessage: '', registerSuccess: '' }
 );
