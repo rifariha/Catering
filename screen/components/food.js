@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderWidth: 0.5,
         width:150,
-        // elevation: 2,
+        elevation: 0.5,
         flexDirection: 'column',
     },
     foodName: {

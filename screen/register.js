@@ -5,7 +5,8 @@ import bgImage from '../assets/frontbg.jpg'
 import { Context as AuthContext} from './context/AuthContext'
 
 const register = ({navigation}) => {
-    const {state, signup} = useContext(AuthContext)
+const {state, signup} = useContext(AuthContext)
+
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -26,6 +27,7 @@ const register = ({navigation}) => {
                 </View>     
                 <View style={styles.card}>
                     <Text style={styles.textHeader}>Registrasi</Text>
+
                     <TextInput style={styles.textInput} placeholder='Nama'
                     value={name} onChangeText={setName} autoCapitalize='none' autoCorrect={false}
                         ></TextInput>

@@ -1,12 +1,13 @@
 import React , {useState, useContext} from 'react'
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Button, ScrollView} from 'react-native'
+import {NavigationEvents} from 'react-navigation'
 import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
 import { Context as AuthContext} from './context/AuthContext'
 
 
 const login = ({navigation}) => {
-    const {state, signin} = useContext(AuthContext)
+    const {state, signin, tryLocalSignin} = useContext(AuthContext)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -23,6 +24,9 @@ const login = ({navigation}) => {
                             </View>
                         </View>     
                         <View style={styles.card}>
+                            {/* <NavigationEvents 
+                                onWillFocus={{clearErrorMessage}}
+                            /> */}
                             <Text style={styles.textHeader}>Silahkan Login</Text>
                             <TextInput style={styles.textInput} placeholder='Email' 
                             value={email} onChangeText={setEmail} autoCorrect={false} autoCapitalize='none'

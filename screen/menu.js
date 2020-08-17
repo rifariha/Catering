@@ -4,8 +4,8 @@ import Food from './components/food'
 import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 const menu = ({navigation}) => {
     return (
-        <View>
-        <Text style={styles.textStyle}>Menu Hari Ini</Text>
+        <View style={{backgroundColor:"white"}}>
+        {/* <Text style={styles.textStyle}>Menu Hari Ini</Text> */}
         <ScrollView>
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => navigation.navigate('DetailMenu')}>
@@ -13,7 +13,8 @@ const menu = ({navigation}) => {
                 </TouchableOpacity>
                 <Food nama='Sambal Ikan Dencis' gambar='https://img-global.cpcdn.com/recipes/714aeff14f019f83/751x532cq70/sambal-ikan-kembung-foto-resep-utama.jpg'></Food>
                 <Food nama='Rendang' gambar='https://i0.wp.com/resepkoki.id/wp-content/uploads/2017/11/Resep-Rendang-padang.jpg?fit=2837%2C3283&ssl=1'></Food>
-                <Food nama='Mie Goreng' gambar='https://lh3.googleusercontent.com/proxy/pRQPIwzjipBIhsBcc-U1A6bVSb6obrvY5GqvQUDKbX8wm_1CnOkuKJi4S7W-elar3-rwTVcvOPBzsaQ2Bwk3IZpZjnJOiXCRUSHHyClThN0wfIX_UFfn81LpmDSddZA'></Food>
+                <Food nama='Mie Goreng' gambar='https://www.masakapahariini.com/wp-content/uploads/2018/04/cara-membuat-mie-goreng-telur-500x300.jpg'></Food>
+
                 <Food nama='Ayam Goreng' gambar='https://keeprecipes.com/sites/keeprecipes/files/104127_1419594390_0.jpg'></Food>
                 <Food nama='Ayam Sambal Ijo' gambar='https://craftlog.com/m/i/10531004=s1280=h960'></Food>
                 <Food nama='Sambal Goreng Udang' gambar='https://selerasa.com/wp-content/uploads/2015/07/images_ikan_resep_udang_28-udang-sambal-pete.jpg'></Food>
@@ -24,6 +25,12 @@ const menu = ({navigation}) => {
     )
 }
 
+menu.navigationOptions = () =>{
+    return {
+        title:'Daftar Menu',
+    };
+}; 
+
 export default menu
 
 const styles = StyleSheet.create({
@@ -33,7 +40,8 @@ const styles = StyleSheet.create({
         height:'100%',
         justifyContent: 'center',
         flexWrap:'wrap',
-        marginBottom:80,
+        marginVertical:25,
+        backgroundColor:'white',
     },
     textStyle: {
         fontSize: 20,

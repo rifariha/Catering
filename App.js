@@ -4,24 +4,34 @@ import LoginScreen from './screen/login';
 import RegisterScreen from './screen/register';
 import MenuScreen from './screen/menu';
 import MenuDetailScreen from './screen/menudetail';
+import CartScreen from './screen/cart';
 import AccountScreen from './screen/account';
+import OrderScreen from './screen/order';
+
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Provider as AuthProvider } from './screen/context/AuthContext'
 import { setNavigator } from './screen/navigationRef'
+import ResolveAuthScreen from './screen/ResolveAuthScreen'
 
 const switchNavigator = createSwitchNavigator({
+  ResolveAuth: ResolveAuthScreen,
   loginflow: createStackNavigator({
     Signin: LoginScreen,
     Signup: RegisterScreen,
   }),
   mainFLow: createBottomTabNavigator({
-    ListMenu: createStackNavigator({
-      Menu: MenuScreen,
+    Menu: createStackNavigator({
+      DaftarMenu: MenuScreen,
       DetailMenu: MenuDetailScreen,
     }),
-    Account: AccountScreen,
+    Cart: createStackNavigator({
+      Keranjang : CartScreen,
+    }),
+    Order : OrderScreen,
+    Account : AccountScreen,
+
   })
 
 });
