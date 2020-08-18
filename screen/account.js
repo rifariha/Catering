@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Food from './components/food'
-import { ScrollView, FlatList } from 'react-native-gesture-handler'
-const menu = () => {
+import { ScrollView} from 'react-native-gesture-handler'
+import Icon from 'react-native-vector-icons/Feather'
+const account = () => {
     return (
         <View>
         <ScrollView>
@@ -14,7 +14,17 @@ const menu = () => {
     )
 }
 
-export default menu
+account.navigationOptions = () =>{
+    return {
+        title:'Akun Saya',
+        tabBarLabel: 'ShoutOut',
+        // tabBarIcon: () => (
+        //     <Icon name="trash-2" size={25} />
+        //   )
+    };
+};
+
+export default account
 
 const styles = StyleSheet.create({
     container: {

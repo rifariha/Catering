@@ -1,33 +1,35 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, Image,Modal, Button } from 'react-native'
+import { StyleSheet, Text, View, Image,Modal, Button, Alert } from 'react-native'
 import PriceFormat from './priceformat';
 import Icon from 'react-native-vector-icons/Feather'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
-
-const cartitem = (props) => {
-
+const cartitem = ({name, quantity, gambar, price}) => {
+    
+    confirm = (name, quantity) => {
+        Alert.alert(
+          'Apakah anda yakin menghapus item ini ?',
+          name + ' ' + quantity +' porsi',
+          [
+            {text: 'NO', onPress: () => console.log('NO Pressed'), style: 'cancel'},
+            {text: 'YES', onPress: () => console.log('YES Pressed')},
+          ]
+        );
+      }
+      
     return (
         <View style={styles.wrapper}>
             <View>
-                <Image style={styles.cover} source={{ uri: props.gambar }}></Image>
+                <Image style={styles.cover} source={{ uri: gambar }}></Image>
             </View>
             <View style={{margin:5,justifyContent:'space-around'}}>
-                <Text style={{fontSize:20,fontWeight:'bold',marginHorizontal:10}}>{props.name}</Text>
-                <Text style={{fontSize:18,fontWeight:'500',marginHorizontal:10}}>Jumlah : {props.quantity}</Text>
-                <PriceFormat value={props.price}></PriceFormat>
+                <Text style={{fontSize:20,fontWeight:'bold',marginHorizontal:10}}>{name}</Text>
+                <Text style={{fontSize:18,fontWeight:'500',marginHorizontal:10}}>Jumlah : {quantity}</Text>
+                <PriceFormat value={price}></PriceFormat>
             </View>
-            <Modal 
-                transparent={true}
-                visible={}
-            >
-                <View>
-                     <Button title='Close Modal' onPress={}></Button>   
-                </View>        
-            </Modal>
+            
             <View style={styles.trash}>
-                <TouchableOpacity onPress={}>
+                <TouchableOpacity onPress={() => this.confirm(name,quantity)}>
                     <Icon name='trash-2' size={26}></Icon>
                 </TouchableOpacity>
             </View>
@@ -59,5 +61,5 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
         right: 20,
-    }
+    },
 })

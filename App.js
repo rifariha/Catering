@@ -7,6 +7,7 @@ import MenuDetailScreen from './screen/menudetail';
 import CartScreen from './screen/cart';
 import AccountScreen from './screen/account';
 import OrderScreen from './screen/order';
+import Icon from 'react-native-vector-icons/Feather'
 
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
@@ -22,16 +23,51 @@ const switchNavigator = createSwitchNavigator({
     Signup: RegisterScreen,
   }),
   mainFLow: createBottomTabNavigator({
-    Menu: createStackNavigator({
-      DaftarMenu: MenuScreen,
-      DetailMenu: MenuDetailScreen,
-    }),
-    Cart: createStackNavigator({
-      Keranjang : CartScreen,
-    }),
-    Order : OrderScreen,
-    Account : AccountScreen,
-
+    Menu : {
+      screen: createStackNavigator({
+        DaftarMenu: MenuScreen,
+        DetailMenu: MenuDetailScreen,
+      }),
+      navigationOptions: {
+        tabBarLabel: 'Menu',
+        tabBarIcon: () => (
+            <Icon name="book-open" size={20} />
+        )
+      },
+    },
+    Order: {
+      screen: createStackNavigator({
+        Keranjang : CartScreen,
+      }),
+      navigationOptions: {
+        tabBarLabel: 'Pesanan',
+        tabBarIcon: () => (
+            <Icon name="shopping-cart" size={20} />
+        ),
+      },
+    },
+    History : {
+      screen: createStackNavigator({
+        Order : OrderScreen,
+      }),
+      navigationOptions: {
+        tabBarLabel: 'History',
+        tabBarIcon: () => (
+            <Icon name="clock" size={20}/>
+        )
+      },
+    },
+    Account : {
+      screen: createStackNavigator({
+        Account : AccountScreen,
+      }),
+      navigationOptions: {
+        tabBarLabel: 'Account',
+        tabBarIcon: () => (
+            <Icon name="user" size={20} />
+        )
+      },
+    },
   })
 
 });

@@ -10,7 +10,7 @@ const priceformat = ({value}) => {
         thousandSeparator={true} 
         prefix={'Rp.'} 
         renderText={formattedValue =>
-            <Text style={{fontSize:18,fontWeight:'500',marginHorizontal:10}}>{formattedValue}</Text>
+            <Text style={{fontSize:18,fontWeight:'500',marginHorizontal:10,fontWeight:'bold'}}>{formattedValue}</Text>
         }/>
     )
 }

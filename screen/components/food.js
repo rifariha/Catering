@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
     },
     card: {
         margin: 10,
-        borderColor: '#cccccc',
+        borderColor: 'black',
+        backgroundColor:'white',
         borderRadius: 20,
-        borderWidth: 0.5,
+        elevation: 2,
         width:150,
-        elevation: 0.5,
         flexDirection: 'column',
     },
     foodName: {

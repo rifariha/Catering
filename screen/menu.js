@@ -4,7 +4,7 @@ import Food from './components/food'
 import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 const menu = ({navigation}) => {
     return (
-        <View style={{backgroundColor:"white"}}>
+        <View style={{backgroundColor:"#ecf0f1"}}>
         {/* <Text style={styles.textStyle}>Menu Hari Ini</Text> */}
         <ScrollView>
             <View style={styles.container}>
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexWrap:'wrap',
         marginVertical:25,
-        backgroundColor:'white',
+        backgroundColor:'#ecf0f1',
     },
     textStyle: {
         fontSize: 20,

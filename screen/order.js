@@ -13,7 +13,7 @@ const order = () => {
 
 order.navigationOptions = () =>{
     return {
-        title:'Keranjang Anda',
+        title:'Riwayat Pesanan',
     };
 };
 
