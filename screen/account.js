@@ -1,13 +1,18 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, {useContext} from 'react'
+import { StyleSheet, Text, View, Button } from 'react-native'
 import { ScrollView} from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
+import {Context as AuthContext} from './context/AuthContext'
 const account = () => {
+
+    const {signout} = useContext(AuthContext)
+
     return (
         <View>
         <ScrollView>
             <View>
                 <Text>Ini menu akun</Text>
+                <Button title="sign out" onPress={signout} />
             </View>
         </ScrollView>
         </View>
@@ -17,10 +22,6 @@ const account = () => {
 account.navigationOptions = () =>{
     return {
         title:'Akun Saya',
-        tabBarLabel: 'ShoutOut',
-        // tabBarIcon: () => (
-        //     <Icon name="trash-2" size={25} />
-        //   )
     };
 };
 

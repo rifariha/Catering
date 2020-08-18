@@ -1,10 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Food from './components/food'
 import { ScrollView, FlatList } from 'react-native-gesture-handler'
-const menu = () => {
+const detail = () => {
     return (
-        <View>
+        <View style={styles.container}>
         <ScrollView>
             <View>
                 <Text>Ini menu detail</Text>
@@ -14,23 +13,25 @@ const menu = () => {
     )
 }
 
-export default menu
+detail.navigationOptions = () =>{
+    return {
+        title:'Soto Ayam',
+        headerTransparent: true
+        // headerStyle: {
+            // backgroundColor: 'transparent',
+            // elevation: 0,
+            // shadowOpacity: 0,
+            // borderBottomWidth: 0,
+        //   }
+    };
+}; 
+
+export default detail
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection:'row',
         width:'100%',
         height:'100%',
         justifyContent: 'center',
-        flexWrap:'wrap',
-        marginBottom:80,
     },
-    textStyle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'black',
-        textAlign: 'left',
-        padding: 10,
-        margin: 10,
-    }
 })

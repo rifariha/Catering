@@ -11,6 +11,8 @@ const authReducer = (state, action) => {
             return { errorMessage: '', name: action.payload }
         case 'signup':
             return { ...state, registerSuccess: action.payload}
+        case 'signout' :
+            return {name : null, errorMessage: '', registerSuccess:''}
         case 'clear_error_message':
             return {...state, errorMessage: '', registerSuccess:''}
             default:
@@ -24,7 +26,7 @@ const tryLocalSignin = dispatch => async() => {
         dispatch({type:'signin', patyload:name})
         navigate('Menu')
     }else{
-        navigate('Singin')
+        navigate('Signin')
     }
 }
 
@@ -70,10 +72,10 @@ const signin = (dispatch) => async ({ email, password }) => {
 }
 
 
-const signout = (dispatch) => {
-    return () => {
-        //make api request 
-    }
+const signout = dispatch => async() => {
+    await AsyncStorage.removeItem('name')
+    dispatch({type:'signout'})
+    navigate('loginflow')
 }
 
 export const { Provider, Context } = createDataContext(

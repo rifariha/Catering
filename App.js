@@ -17,7 +17,7 @@ import { setNavigator } from './screen/navigationRef'
 import ResolveAuthScreen from './screen/ResolveAuthScreen'
 
 const switchNavigator = createSwitchNavigator({
-  ResolveAuth: ResolveAuthScreen,
+  ResolveAuth: ResolveAuthScreen,  
   loginflow: createStackNavigator({
     Signin: LoginScreen,
     Signup: RegisterScreen,
@@ -74,9 +74,8 @@ const switchNavigator = createSwitchNavigator({
 
 // const navigator = createStackNavigator(
 //   {
-//     Login: Login,
-//     Register: Register, 
-//     Menu: Menu,
+//     Login: LoginScreen,
+//     Register: RegisterScreen, 
 //   },
 //   {
 //     headerMode:'none',
