@@ -8,11 +8,11 @@ const authReducer = (state, action) => {
         case 'add_error':
             return { ...state, errorMessage: action.payload }
         case 'signin':
-            return { errorMessage: '', name: action.payload }
+            return { errorMessage: '', userdata: action.payload }
         case 'signup':
             return { ...state, registerSuccess: action.payload}
         case 'signout' :
-            return {name : null, errorMessage: '', registerSuccess:''}
+            return {userdata: null, errorMessage: '', registerSuccess:''}
         case 'clear_error_message':
             return {...state, errorMessage: '', registerSuccess:''}
             default:
@@ -21,9 +21,9 @@ const authReducer = (state, action) => {
 };
 
 const tryLocalSignin = dispatch => async() => {
-    const name = await AsyncStorage.getItem('name');
-    if(name) {
-        dispatch({type:'signin', patyload:name})
+    const userdata = await AsyncStorage.getItem('userdata');
+    if(userdata) {
+        dispatch({type:'signin', patyload:userdata})
         navigate('Menu')
     }else{
         navigate('Signin')
@@ -58,14 +58,13 @@ const signin = (dispatch) => async ({ email, password }) => {
     //make api request
     try {
         const response = await api.post('/login', { email, password });
-        console.log(response.data.data.nama);
+        console.log(response.data.data);
         // console.log('wdwdwd')
-        await AsyncStorage.setItem('name', response.data.data.nama);
-        // await AsyncStorage.getItem('name');
-        dispatch({type: 'signin', payload: response.data.data.nama});
+        await AsyncStorage.setItem('userdata', JSON.stringify(response.data.data));
+        // await AsyncStorage.getItem('userdata');
+        dispatch({type: 'signin', payload: response.data.data});
         navigate('Menu');
     } catch (error) {
-
         console.log(error);
         dispatch({ type: 'add_error', payload: 'Akun anda tidak ditemukan' })
     }
@@ -73,7 +72,7 @@ const signin = (dispatch) => async ({ email, password }) => {
 
 
 const signout = dispatch => async() => {
-    await AsyncStorage.removeItem('name')
+    await AsyncStorage.removeItem('userdata')
     dispatch({type:'signout'})
     navigate('loginflow')
 }
@@ -81,5 +80,5 @@ const signout = dispatch => async() => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     { signin, signout, signup, ClearErrorMessage, tryLocalSignin },
-    { name: null, errorMessage: '', registerSuccess: '' }
+    { userdata: null, errorMessage: '', registerSuccess: '' }
 );
