@@ -1,11 +1,19 @@
 import React from 'react'
 import {StyleSheet, Text, View} from 'react-native'
 import {ScrollView, FlatList} from 'react-native-gesture-handler'
+import Orderitem from './components/orderitem'
 const order = () => {
     return (<View>
         <ScrollView>
             <View>
-                <Text>Ini menu order</Text>
+                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
+                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
+                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
+                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
+                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
+                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
+                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
+                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
             </View>
         </ScrollView>
     </View>)

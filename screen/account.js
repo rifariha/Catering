@@ -1,18 +1,43 @@
-import React, {useContext} from 'react'
+import React, {useContext,useState,useEffect} from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { ScrollView} from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
+import AsyncStorage from '@react-native-community/async-storage'
 import {Context as AuthContext} from './context/AuthContext'
 const account = () => {
 
     const {signout} = useContext(AuthContext)
 
+    const [data, setData] = useState('')
+
+    const readData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('userdata')
+            const userdata = JSON.parse(value);
+
+            if (userdata !== null) {
+                setData(userdata)
+            }
+        } catch (e) {
+            alert('Failed to fetch the data from storage')
+        }
+    }
+
+    useEffect(() => {
+        readData()
+    }, [])
+
     return (
         <View>
         <ScrollView>
-            <View>
-                <Text>Ini menu akun</Text>
-                <Button title="sign out" onPress={signout} />
+            <View style={{backgroundColor:'white',borderRadius:20,margin:10,padding:5,elevation:2}}>
+                <Text style={{fontSize:30,fontWeight:'bold',padding:5,margin:10}}>{data.nama}</Text>
+                <Text style={styles.textStyle}>{data.email}</Text>
+                <Text style={styles.textStyle}>{data.alamat}</Text>
+                <Text style={styles.textStyle}>{data.nomorTelepon}</Text>
+                <View style={{borderRadius:20,padding:20}}>
+                    <Button color="orange" title="logout" onPress={signout} />
+                </View>
             </View>
         </ScrollView>
         </View>
@@ -28,20 +53,11 @@ account.navigationOptions = () =>{
 export default account
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection:'row',
-        width:'100%',
-        height:'100%',
-        justifyContent: 'center',
-        flexWrap:'wrap',
-        marginBottom:80,
-    },
-    textStyle: {
+    textStyle : {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: 'black',
-        textAlign: 'left',
-        padding: 10,
-        margin: 10,
+        fontWeight: '500',
+        marginHorizontal: 10,
+        paddingHorizontal:5
+
     }
 })
