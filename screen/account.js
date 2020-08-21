@@ -34,7 +34,10 @@ const account = () => {
                 <Text style={{fontSize:30,fontWeight:'bold',padding:5,margin:10}}>{data.nama}</Text>
                 <Text style={styles.textStyle}>{data.email}</Text>
                 <Text style={styles.textStyle}>{data.alamat}</Text>
-                <Text style={styles.textStyle}>{data.nomorTelepon}</Text>
+                <Text style={styles.textStylesmall}>{data.provinsi}</Text>
+                <Text style={styles.textStylesmall}>{data.kota}</Text>
+                <Text style={styles.textStylesmall}>{data.kodepos}</Text>
+                <Text style={styles.textStylesmall}>{data.nohp}</Text>
                 <View style={{borderRadius:20,padding:20}}>
                     <Button color="orange" title="logout" onPress={signout} />
                 </View>
@@ -55,6 +58,13 @@ export default account
 const styles = StyleSheet.create({
     textStyle : {
         fontSize: 20,
+        fontWeight: '500',
+        marginHorizontal: 10,
+        paddingHorizontal:5
+
+    },
+    textStylesmall : {
+        fontSize: 15,
         fontWeight: '500',
         marginHorizontal: 10,
         paddingHorizontal:5

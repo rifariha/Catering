@@ -57,12 +57,15 @@ const signup = (dispatch) => async ({ email, name, password, passwordConfirmatio
 const signin = (dispatch) => async ({ email, password }) => {
     //make api request
     try {
-        const response = await api.post('/login', { email, password });
-        console.log(response.data.data);
-        // console.log('wdwdwd')
-        await AsyncStorage.setItem('userdata', JSON.stringify(response.data.data));
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+
+        const response = await api.post('/login.php', formData);
+        console.log(response.data.result);
+        await AsyncStorage.setItem('userdata', JSON.stringify(response.data.result));
         // await AsyncStorage.getItem('userdata');
-        dispatch({type: 'signin', payload: response.data.data});
+        dispatch({type: 'signin', payload: response.data.result});
         navigate('Menu');
     } catch (error) {
         console.log(error);
