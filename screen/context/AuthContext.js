@@ -41,10 +41,24 @@ const signup = (dispatch) => async ({ email, name, password, passwordConfirmatio
         dispatch({ type: 'add_error', payload: 'Password yang anda masukan tidak sama' })
     }
     try {
-        const response = await api.post('/register', { email, password, phone, address, name});
-        console.log(response.data);
-        dispatch({ type: 'signup', payload: 'Pendaftaran Berhasil, silahkan login' });
-        navigate('Signin');
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("nama", name);
+        formData.append("password", password);
+        formData.append("nohp", phone);
+        formData.append("alamat", address);
+
+        const response = await api.post('/register-user.php', formData);
+        console.log(response.data.status);
+        if(response.data.status === false)
+        {
+            dispatch({ type: 'add_error', payload: 'Kesalahan dalam pendaftaran, silahkan coba lagi' })    
+        }
+        else
+        {
+            dispatch({ type: 'signup', payload: 'Pendaftaran Berhasil, silahkan login' });
+            navigate('Signin');
+        }
     } catch (error) {
 
         console.log(error);
