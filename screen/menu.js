@@ -23,12 +23,16 @@ const menu = ({navigation}) => {
         fetchData();
     }, []);
 
+    const fetchOtherCategory = async (id) => {
+        const result = await api.get('/get-menu-bykategori.php?kategori='+id);
+            setData(result.data.result);
+        };
 
     return (
         <View style={{backgroundColor:"#ecf0f1"}}>
             <View style={{flexDirection:'row', alignItems:"center",justifyContent:'center',backgroundColor:'white',padding:10,margin:10,elevation:1}}>
                 {kategori.map(item => (
-                    <TouchableOpacity style={{paddingHorizontal:5}} key={item.id} onPress={() => null}>
+                    <TouchableOpacity style={{paddingHorizontal:5}} key={item.id} onPress={() => fetchOtherCategory(item.id)}>
                         <View style={{backgroundColor:'#ecf0f1', borderRadius:20,}}>
                             <Text style={{paddingHorizontal:5}}> {item.kategori} </Text>
                         </View>
