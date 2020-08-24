@@ -1,15 +1,34 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, {useState,useEffect} from 'react'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { ScrollView} from 'react-native-gesture-handler'
+import api from './api/index'
+import PriceFormat from './components/priceformat';
+
+
 const detail = ({navigation}) => {
     const id = navigation.state.params.id
-  
+    const [data, setData] = useState({})
+
+     useEffect(() => {
+        const fetchData = async () => {
+        const result = await api.get('/get-menu-detail.php?id='+id);
+            setData(result.data.result);
+        };
+
+        fetchData();
+    }, []);
     return (
         <View style={styles.container}>
         <ScrollView>
             <View>
-                <Text>Ini menu detail</Text>
-                  <Text>itemId: {id}</Text>
+                    <View>
+                        <Image source={{uri:data.gambar}}></Image>
+                    </View>
+                    <View>
+                        <Text>{data.nama_produk}</Text>
+                        <PriceFormat value={data.harga}></PriceFormat>
+                        <Text>{data.deskripsi}</Text>
+                    </View>
             </View>
         </ScrollView>
         </View>
