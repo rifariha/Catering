@@ -24,7 +24,17 @@ const cartitem = ({name, quantity, gambar, price}) => {
             </View>
             <View style={{margin:5,justifyContent:'space-around'}}>
                 <Text style={{fontSize:20,fontWeight:'bold',marginHorizontal:10}}>{name}</Text>
-                <Text style={{fontSize:18,fontWeight:'500',marginHorizontal:10}}>Jumlah : {quantity}</Text>
+                
+                <View style={{flexDirection:'row'}}>
+                    <Text style={{fontSize:18,fontWeight:'500',marginHorizontal:10}}> Jumlah :</Text> 
+                    <TouchableOpacity style={styles.itemNumber} onPress={() => this.confirm(name,quantity)}>
+                        <Icon name='minus-circle' size={18}></Icon>
+                    </TouchableOpacity>
+                     <Text style={{fontSize:15, marginTop:3}}> {quantity} </Text> 
+                    <TouchableOpacity style={styles.itemNumber}  onPress={() => this.confirm(name,quantity)}>
+                        <Icon name='plus-circle' size={18}></Icon>
+                    </TouchableOpacity>
+                </View>
                 <PriceFormat value={price}></PriceFormat>
             </View>
             
@@ -62,4 +72,7 @@ const styles = StyleSheet.create({
         bottom: 20,
         right: 20,
     },
+    itemNumber: {
+        marginTop:4,
+    }
 })
