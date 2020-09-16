@@ -3,9 +3,16 @@ import { StyleSheet, Text, View, Image,Modal, Button, Alert } from 'react-native
 import PriceFormat from './priceformat';
 import Icon from 'react-native-vector-icons/Feather'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import api from '../api/index'
+import AsyncStorage from '@react-native-community/async-storage'
+import NumberFormat from 'react-number-format'
 
-const cartitem = ({name, quantity, gambar, price}) => {
+const cartitem = ({id,name, quantity, gambar, price, totalprice}) => {
     
+    const [quantities, setQuantity] = useState(quantity)
+    const [order, setOrder] = useState('');
+    const [data, setData] = useState([]);
+
     confirm = (name, quantity) => {
         Alert.alert(
           'Apakah anda yakin menghapus item ini ?',
@@ -17,6 +24,49 @@ const cartitem = ({name, quantity, gambar, price}) => {
         );
       }
       
+    const addQuantity = async ({id,quantities}) => {
+        try {
+            // console.log(id,quantities);
+            const formData = new FormData();
+            formData.append("cart_items", id);
+            formData.append("qty", parseInt(quantities)+1);
+            const response = await api.post('/update-cart.php', formData);
+            console.log(response.data.status);
+            if (response.data.status == true) {
+                const value = await AsyncStorage.getItem('userdata');
+                const userdata = JSON.parse(value);
+                const result = await api.get('/get-cart.php?user_id='+userdata.id);
+                console.log(result.data.result)
+                setOrder(result.data.result);
+                setData(result.data.result.cart_items);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+     const removeQuantity = async ({id,quantities}) => {
+        try {
+            // console.log(id,quantities);
+            const formData = new FormData();
+            formData.append("cart_items", id);
+            formData.append("qty", parseInt(quantities)-1);
+            const response = await api.post('/update-cart.php', formData);
+            console.log(response.data.status);
+            if (response.data.status == true) {
+                const value = await AsyncStorage.getItem('userdata');
+                const userdata = JSON.parse(value);
+                const result = await api.get('/get-cart.php?user_id='+userdata.id);
+                setOrder(result.data.result);
+                setData(result.data.result.cart_items);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <View style={styles.wrapper}>
             <View>
@@ -27,15 +77,28 @@ const cartitem = ({name, quantity, gambar, price}) => {
                 
                 <View style={{flexDirection:'row'}}>
                     <Text style={{fontSize:18,fontWeight:'500',marginHorizontal:10}}> Jumlah :</Text> 
-                    <TouchableOpacity style={styles.itemNumber} onPress={() => this.confirm(name,quantity)}>
+                    <TouchableOpacity style={styles.itemNumber} onPress={() => removeQuantity({id,quantities})}>
                         <Icon name='minus-circle' size={18}></Icon>
                     </TouchableOpacity>
                      <Text style={{fontSize:15, marginTop:3}}> {quantity} </Text> 
-                    <TouchableOpacity style={styles.itemNumber}  onPress={() => this.confirm(name,quantity)}>
+                    <TouchableOpacity style={styles.itemNumber}  onPress={() => addQuantity({id,quantities})}>
                         <Icon name='plus-circle' size={18}></Icon>
                     </TouchableOpacity>
                 </View>
-                <PriceFormat value={price}></PriceFormat>
+                <Text style={{marginLeft:10}}> Harga : 
+                    <NumberFormat 
+                        value={price} 
+                        displayType={'text'} 
+                        thousandSeparator={true} 
+                        prefix={'Rp.'} 
+                        renderText={formattedValue =>
+                            <Text style={{fontSize:12,fontWeight:'500',marginHorizontal:10}}>{formattedValue}</Text>
+                        }/>
+                </Text>
+                <Text style={{marginLeft:8}}>
+                    Total :
+                    <PriceFormat value={totalprice}></PriceFormat>
+                </Text>
             </View>
             
             <View style={styles.trash}>
