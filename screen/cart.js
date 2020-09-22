@@ -13,13 +13,13 @@ const keranjang = ({navigation}) => {
     const [order, setOrder] = useState('');
     const [promo, setPromo] = useState('');
     
-    confirm = ({name, quantity}) => {
+    confirm = ({id, name, quantity}) => {
         Alert.alert(
           'Apakah anda yakin menghapus item ini ?',
           name + ' ' + quantity +' porsi',
           [
             {text: 'NO', onPress: () => console.log('NO Pressed'), style: 'cancel'},
-            {text: 'YES', onPress: () => console.log('YES Pressed')},
+            {text: 'YES', onPress: () => deleteItem({id})},
           ]
         );
       }
@@ -37,6 +37,26 @@ const keranjang = ({navigation}) => {
 
         fetchData();
     }, []);
+
+    const deleteItem = async({id}) => {
+        try {
+            const formData = new FormData();
+            formData.append("cart_items", id);
+            const response = await api.post('/delete-cart.php', formData);
+            console.log(id);
+            console.log(response.data.status);
+            if (response.data.status == true) {
+                const value = await AsyncStorage.getItem('userdata');
+                const userdata = JSON.parse(value);
+                const result = await api.get('/get-cart.php?user_id='+userdata.id);
+                setOrder(result.data.result);
+                setData(result.data.result.cart_items);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const postPromo = async ({promo}) => {
         try {
@@ -164,7 +184,7 @@ const keranjang = ({navigation}) => {
                             </View>
                             
                             <View style={styles.trash}>
-                                <TouchableOpacity onPress={() => this.confirm({name:item.nama_produk,quantity:item.qty})}>
+                                <TouchableOpacity onPress={() => this.confirm({id:item.id,name:item.nama_produk,quantity:item.qty})}>
                                     <Icon name='trash-2' size={26}></Icon>
                                 </TouchableOpacity>
                             </View>
