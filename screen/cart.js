@@ -289,8 +289,8 @@ const keranjang = ({navigation}) => {
                             <PriceFormat value={order.grand_total}></PriceFormat>
                         </Text> */}
                     </View>
-                    <View style={{alignItems:'center', flex:1,justifyContent:'center'}}>
-                        <Button title="Checkout" onPress={() => {navigation.navigate('Checkout')}}/>
+                    <View style={{alignItems:'center',flex:1,justifyContent:'center',paddingHorizontal:10}}>
+                        <Button title="Pesan" onPress={() => {navigation.navigate('Checkout')}}/>
                     </View>
                 </View>
         </View>

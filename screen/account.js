@@ -34,9 +34,6 @@ const account = () => {
                 <Text style={{fontSize:30,fontWeight:'bold',padding:5,margin:10}}>{data.nama}</Text>
                 <Text style={styles.textStyle}>{data.email}</Text>
                 <Text style={styles.textStyle}>{data.alamat}</Text>
-                <Text style={styles.textStylesmall}>{data.provinsi}</Text>
-                <Text style={styles.textStylesmall}>{data.kota}</Text>
-                <Text style={styles.textStylesmall}>{data.kodepos}</Text>
                 <Text style={styles.textStylesmall}>{data.nohp}</Text>
                 <View style={{borderRadius:20,padding:20}}>
                     <Button color="orange" title="logout" onPress={signout} />

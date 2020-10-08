@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Button } from 'react-native'
 import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler'
 import api from './api/index'
 import AsyncStorage from '@react-native-community/async-storage'
+import Icon from 'react-native-vector-icons/Feather'
+
 
 const checkout = () => {
 
@@ -40,15 +42,18 @@ const checkout = () => {
     return (
         <View>
         <ScrollView>
-            <View style={{backgroundColor:'white',borderRadius:20,margin:10,padding:5,elevation:2}}>
-                 {rekening.map(item => (
-                    <TouchableOpacity key={item.id} onPress={() => selectPayment({id:item.id})}>
-                       <Text style={{fontSize:30,fontWeight:'bold',padding:5,margin:10}}>{item.nama_bank}</Text>
-                        <Text style={styles.textStyle}>{item.nomor_rekening}</Text>
-                        <Text style={styles.textStyle}>{item.nama}</Text>
-                    </TouchableOpacity>
-                    ))}
-            </View>
+             {rekening.map(item => (
+                <TouchableOpacity key={item.id} onPress={() => selectPayment({id:item.id})}>
+                    <View style={{backgroundColor:'white',borderRadius:20,margin:10,padding:5,elevation:2, flex:6, flexDirection:"row"}}>
+                        <View style={{flex:5}}>
+                            <Text style={{fontSize:30,fontWeight:'bold',padding:5,margin:10}}>{item.nama_bank}</Text>
+                        </View>
+                        <View style={{flex:1, justifyContent:"center"}}>
+                            <Icon name="chevron-right" size={30}></Icon>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            ))}
         </ScrollView>
         </View>
     )
