@@ -7,6 +7,7 @@ import MenuDetailScreen from './screen/menudetail';
 import CartScreen from './screen/cart';
 import AccountScreen from './screen/account';
 import OrderScreen from './screen/order';
+import CheckoutScreen from './screen/checkout';
 import Icon from 'react-native-vector-icons/Feather'
 
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
@@ -38,6 +39,7 @@ const switchNavigator = createSwitchNavigator({
     Order: {
       screen: createStackNavigator({
         Keranjang : CartScreen,
+        Checkout : CheckoutScreen,
       }),
       navigationOptions: {
         tabBarLabel: 'Pesanan',

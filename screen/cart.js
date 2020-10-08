@@ -1,18 +1,20 @@
-import React, {useContext, useState, useEffect} from 'react'
-import Cartitem from './components/cartitem'
+import React, {useState, useEffect, useCallback} from 'react'
 import PriceFormat from './components/priceformat';
-import {StyleSheet, Text, View,  TextInput,Button,Image, Alert} from 'react-native'
+import {StyleSheet, Text, View,  TextInput,Button,Image, Alert,RefreshControl, SafeAreaView} from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import AsyncStorage from '@react-native-community/async-storage'
-import {ScrollView, FlatList, TouchableOpacity} from 'react-native-gesture-handler'
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler'
 import api from './api/index'
 import NumberFormat from 'react-number-format'
+
 const keranjang = ({navigation}) => {
 
     const [data, setData] = useState([]);
     const [order, setOrder] = useState('');
     const [promo, setPromo] = useState('');
-    
+    const [refreshing, setRefreshing] = useState(false);
+
+
     confirm = ({id, name, quantity}) => {
         Alert.alert(
           'Apakah anda yakin menghapus item ini ?',
@@ -30,13 +32,51 @@ const keranjang = ({navigation}) => {
             const value = await AsyncStorage.getItem('userdata');
             const userdata = JSON.parse(value);
             const result = await api.get('/get-cart.php?user_id='+userdata.id);
-            setOrder(result.data.result);
-            setData(result.data.result.cart_items);
-            console.log(data);
+            
+            if(result.data.status == true)
+            {
+                setOrder(result.data.result);
+                setData(result.data.result.cart_items);
+                console.log(data);
+            } 
+            else 
+            {
+                console.log(order)
+            }
         };
 
         fetchData();
     }, []);
+
+
+    const ambilData = async () => {
+        const value = await AsyncStorage.getItem('userdata');
+        const userdata = JSON.parse(value);
+        const result = await api.get('/get-cart.php?user_id='+userdata.id);
+        
+        if(result.data.status == true)
+        {
+            setOrder(result.data.result);
+            setData(result.data.result.cart_items);
+            console.log(data);
+        } 
+        else 
+        {
+            console.log(order)
+        }
+    };
+
+    const wait = (timeout) => {
+        return new Promise(resolve => {
+            setTimeout(resolve, timeout);
+        });
+    }
+
+    const onRefresh = useCallback(() => {
+            setRefreshing(true);
+            ambilData();
+            wait(2000).then(() => setRefreshing(false));
+        }, []);
 
     const deleteItem = async({id}) => {
         try {
@@ -96,6 +136,7 @@ const keranjang = ({navigation}) => {
                 setOrder(result.data.result);
                 setData(result.data.result.cart_items);
             }
+            
 
         } catch (error) {
             console.log(error);
@@ -126,9 +167,25 @@ const keranjang = ({navigation}) => {
 
     return (
     
-    <View style={{height:'100%', backgroundColor:'#ecf0f1'}}>
+    <SafeAreaView style={{height:'100%', backgroundColor:'#ecf0f1'}}>
+         <ScrollView
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {order == null ? 
+            <View style={styles.container}>
+                <Icon name="shopping-cart" size={100}></Icon>
+                <Text style={styles.text}>Keranjang anda kosong</Text>
+                <Text>Silahkan Belanja terlebih dahulu</Text>
+                <View style={{alignItems:'center', flex:1,justifyContent:'center',paddingVertical:20}}>
+                    <Button title="Mulai Belanja" onPress={() => {navigation.navigate('Menu')}}/>
+                </View>         
+            </View>
+        :
         <View style={{flex:8.5}}> 
-            <ScrollView>
+           
                 {order.kode_promo == null ? 
                 <View style={styles.promoInput}>
                     <View style={{flex:3}}>
@@ -192,52 +249,54 @@ const keranjang = ({navigation}) => {
                     // <Cartitem  key={item.id} id={item.id} name={item.nama_produk} quantity={item.qty} price={item.harga} totalprice={item.total_harga} gambar={item.gambar}/>
                     ))
                 }
-            </ScrollView>
+
+                <View style={{flex:1.5,backgroundColor:'white',flexDirection:'row'}}>
+                    <View style={{alignItems:'flex-start',justifyContent:"flex-start",flex:3,flexDirection:'column',margin:10}}>
+                        <Text style={{fontSize:14,alignItems:'center',justifyContent:'center',fontWeight:'500',paddingHorizontal:10}}>
+                            Total Pesanan  : 
+                            <NumberFormat 
+                                value={order.subtotal} 
+                                displayType={'text'} 
+                                thousandSeparator={true} 
+                                prefix={'Rp.'} 
+                                renderText={formattedValue =>
+                                    <Text style={{fontSize:14,fontWeight:'500',marginHorizontal:10,fontWeight:'bold'}}>{formattedValue}</Text>
+                                }/>
+                        </Text>
+                        <Text style={{fontSize:14,alignItems:'center',justifyContent:'center',fontWeight:'500',paddingHorizontal:10}}>
+                            Diskon Promo: 
+                            <NumberFormat 
+                                value={ order.diskon == null ? 0 : order.diskon} 
+                                displayType={'text'} 
+                                thousandSeparator={true} 
+                                prefix={'Rp.'} 
+                                renderText={formattedValue =>
+                                    <Text style={{fontSize:14,fontWeight:'500',marginHorizontal:10,fontWeight:'bold'}}>{formattedValue}</Text>
+                                }/>
+                        </Text>
+                        <Text style={{fontSize:14,alignItems:'center',justifyContent:'center',fontWeight:'500',paddingHorizontal:10}}>
+                                Total Bayar :
+                            <NumberFormat 
+                                value={order.grand_total} 
+                                displayType={'text'} 
+                                thousandSeparator={true} 
+                                prefix={'Rp.'} 
+                                renderText={formattedValue =>
+                                    <Text style={{fontSize:14,fontWeight:'500',marginHorizontal:10,fontWeight:'bold'}}>{formattedValue}</Text>
+                                }/>
+                        </Text>
+                        {/* <Text style={{fontSize:18,alignItems:'flex-end',justifyContent:'center',fontWeight:'bold',paddingHorizontal:10}}>
+                            <PriceFormat value={order.grand_total}></PriceFormat>
+                        </Text> */}
+                    </View>
+                    <View style={{alignItems:'center', flex:1,justifyContent:'center'}}>
+                        <Button title="Checkout" onPress={() => {navigation.navigate('Checkout')}}/>
+                    </View>
+                </View>
         </View>
-        <View style={{flex:1.5,backgroundColor:'white',flexDirection:'row'}}>
-            <View style={{alignItems:'flex-start',justifyContent:"flex-start",flex:3,flexDirection:'column',margin:10}}>
-                <Text style={{fontSize:14,alignItems:'center',justifyContent:'center',fontWeight:'500',paddingHorizontal:10}}>
-                    Total Pesanan  : 
-                    <NumberFormat 
-                        value={order.subtotal} 
-                        displayType={'text'} 
-                        thousandSeparator={true} 
-                        prefix={'Rp.'} 
-                        renderText={formattedValue =>
-                            <Text style={{fontSize:14,fontWeight:'500',marginHorizontal:10,fontWeight:'bold'}}>{formattedValue}</Text>
-                        }/>
-                </Text>
-                <Text style={{fontSize:14,alignItems:'center',justifyContent:'center',fontWeight:'500',paddingHorizontal:10}}>
-                    Diskon Promo: 
-                    <NumberFormat 
-                        value={ order.diskon == null ? 0 : order.diskon} 
-                        displayType={'text'} 
-                        thousandSeparator={true} 
-                        prefix={'Rp.'} 
-                        renderText={formattedValue =>
-                            <Text style={{fontSize:14,fontWeight:'500',marginHorizontal:10,fontWeight:'bold'}}>{formattedValue}</Text>
-                        }/>
-                </Text>
-                <Text style={{fontSize:14,alignItems:'center',justifyContent:'center',fontWeight:'500',paddingHorizontal:10}}>
-                        Total Bayar :
-                    <NumberFormat 
-                        value={order.grand_total} 
-                        displayType={'text'} 
-                        thousandSeparator={true} 
-                        prefix={'Rp.'} 
-                        renderText={formattedValue =>
-                            <Text style={{fontSize:14,fontWeight:'500',marginHorizontal:10,fontWeight:'bold'}}>{formattedValue}</Text>
-                        }/>
-                </Text>
-                {/* <Text style={{fontSize:18,alignItems:'flex-end',justifyContent:'center',fontWeight:'bold',paddingHorizontal:10}}>
-                    <PriceFormat value={order.grand_total}></PriceFormat>
-                </Text> */}
-            </View>
-            <View style={{alignItems:'center', flex:1,justifyContent:'center'}}>
-                <Button title="Pesan"/>
-            </View>
-        </View>
-    </View>)
+        }
+        </ScrollView>
+    </SafeAreaView>)
 }
 
 keranjang.navigationOptions = () =>{
@@ -279,6 +338,27 @@ const styles = StyleSheet.create({
     },
     itemNumber: {
         marginTop:4,
+    },
+    backgroundImage:{
+        justifyContent:'center',
+        alignItems :'center',
+    },
+    container: {
+        flex:1,
+        marginTop:20,
+        alignItems: 'center',
+        padding:20,
+        justifyContent: 'space-around',
+    },
+    text: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#444444',
+        marginTop: 30,
+        marginRight: 5,
+        marginLeft: 5,
+        padding:20,
     }
 })
 

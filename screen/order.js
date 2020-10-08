@@ -1,22 +1,78 @@
-import React from 'react'
-import {StyleSheet, Text, View} from 'react-native'
-import {ScrollView, FlatList} from 'react-native-gesture-handler'
+import React, {useContext, useState, useEffect, useCallback} from 'react'
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler'
+import {StyleSheet, Text, View, Alert,RefreshControl, SafeAreaView} from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
+import api from './api/index'
 import Orderitem from './components/orderitem'
-const order = () => {
-    return (<View>
-        <ScrollView>
-            <View>
-                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
-                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
-                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
-                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
-                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
-                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
-                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
-                <Orderitem transactionCode="TRX-001" price="10000" date="2 May 2020"></Orderitem>
-            </View>
-        </ScrollView>
-    </View>)
+
+const order = ({navigation}) => {
+
+    const [data, setData] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    useEffect(() => {
+        
+        const fetchData = async () => {
+            const value = await AsyncStorage.getItem('userdata');
+            const userdata = JSON.parse(value);
+            const result = await api.get('/get-order.php?user_id='+userdata.id);
+            
+            if(result.data.status == true)
+            {
+                setData(result.data.result);
+                console.log(data);
+            } 
+            else 
+            {
+                console.log(order)
+            }
+        };
+
+        fetchData();
+    }, []);
+
+        const ambildata = async () => {
+            const value = await AsyncStorage.getItem('userdata');
+            const userdata = JSON.parse(value);
+            const result = await api.get('/get-order.php?user_id='+userdata.id);
+            
+            if(result.data.status == true)
+            {
+                setData(result.data.result);
+                console.log(data);
+            } 
+            else 
+            {
+                console.log(order)
+            }
+        };
+
+        const wait = (timeout) => {
+            return new Promise(resolve => {
+                setTimeout(resolve, timeout);
+            });
+        }
+
+        const onRefresh = useCallback(() => {
+            setRefreshing(true);
+            ambildata();
+            wait(2000).then(() => setRefreshing(false));
+        }, []);
+    
+        return (
+         <SafeAreaView style={{height:'100%', backgroundColor:'#ecf0f1'}}>
+            <ScrollView contentContainerStyle={styles.scrollView} refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
+                <View>
+                    {data.map(item => (
+                        <View key={item.id}>
+                            <Orderitem transactionCode={item.invoice} price={item.grand_total} date={item.created_at}></Orderitem>
+                        </View>
+                    ))}
+                </View>
+            </ScrollView>
+        </SafeAreaView>)
 }
 
 order.navigationOptions = () =>{
