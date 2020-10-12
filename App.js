@@ -9,6 +9,7 @@ import AccountScreen from './screen/account';
 import OrderScreen from './screen/order';
 import CheckoutScreen from './screen/checkout';
 import SummaryScreen from './screen/summary';
+import OrderDetailScreen from './screen/orderdetail';
 import Icon from 'react-native-vector-icons/Feather'
 
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
@@ -53,6 +54,7 @@ const switchNavigator = createSwitchNavigator({
     History : {
       screen: createStackNavigator({
         Order : OrderScreen,
+        DetailOrder : OrderDetailScreen,
       }),
       navigationOptions: {
         tabBarLabel: 'History',
