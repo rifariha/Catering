@@ -53,7 +53,6 @@ const keranjang = ({navigation}) => {
         const value = await AsyncStorage.getItem('userdata');
         const userdata = JSON.parse(value);
         const result = await api.get('/get-cart.php?user_id='+userdata.id);
-        
         if(result.data.status == true)
         {
             setOrder(result.data.result);
@@ -62,7 +61,12 @@ const keranjang = ({navigation}) => {
         } 
         else 
         {
-            console.log(order)
+            if(order == '')
+            {
+                setOrder(null);    
+                setData([]);    
+            }
+            console.log('situ')
         }
     };
 
@@ -114,6 +118,10 @@ const keranjang = ({navigation}) => {
                 const result = await api.get('/get-cart.php?user_id='+userdata.id);
                 setOrder(result.data.result);
                 setData(result.data.result.cart_items);
+            }
+            else
+            {
+                alert('Promo tidak bisa digunakan')
             }
 
         } catch (error) {

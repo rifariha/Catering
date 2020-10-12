@@ -1,12 +1,12 @@
 import React, {useContext,useState,useEffect} from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Button, Alert } from 'react-native'
 import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler'
 import api from './api/index'
 import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/Feather'
+import { navigate } from './navigationRef'
 
-
-const checkout = () => {
+const checkout = ({navigation}) => {
 
     const [rekening, setRekening] = useState([]);
     
@@ -15,6 +15,7 @@ const checkout = () => {
         const fetchData = async () => {
             const result = await api.get('/get-rekening.php');
             setRekening(result.data.result);
+            console.log(rekening)
         };
 
         fetchData();
@@ -31,7 +32,10 @@ const checkout = () => {
             const response = await api.post('/order.php', formData);
             console.log(response.data.status);
             if (response.data.status == true) {
-                console.log('berhasil pesan');
+                console.log(response.data.result)
+                await AsyncStorage.setItem('ordersummary', JSON.stringify(response.data.result));
+                navigate('Summary')
+                alert(response.data.message);
             }
 
         } catch (error) {
