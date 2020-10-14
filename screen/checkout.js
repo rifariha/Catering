@@ -25,19 +25,16 @@ const checkout = ({navigation}) => {
         try {
             const value = await AsyncStorage.getItem('userdata')
             const userdata = JSON.parse(value);
-            console.log(id,userdata)
             const formData = new FormData();
             formData.append("user_id", userdata.id);
             formData.append("paymethod", id);
             const response = await api.post('/order.php', formData);
-            console.log(response.data.status);
             if (response.data.status == true) {
-                console.log(response.data.result)
+                // console.log(response.data.result)
                 await AsyncStorage.setItem('ordersummary', JSON.stringify(response.data.result));
                 navigate('Summary')
                 alert(response.data.message);
             }
-
         } catch (error) {
             console.log(error);
         }

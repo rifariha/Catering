@@ -10,18 +10,18 @@ const summary = ({navigation}) => {
 
     const [data, setData] = useState({})
     const [rekening, setRekening] = useState({})
+    const [orderitem, setOrderitem] = useState([])
 
     const readData = async () => {
         try {
             const value = await AsyncStorage.getItem('ordersummary')
             const orderdata = JSON.parse(value);
-
             setData(orderdata)
+            setOrderitem(orderdata.orderItems)
             setRekening(orderdata.rekening)
-            console.log(data)
-            console.log(rekening)
-            
+            console.log(orderitem)
         } catch (e) {
+            console.log(e)
             alert('Failed to fetch the data from storage')
         }
     }
@@ -59,19 +59,20 @@ const summary = ({navigation}) => {
                     </View>
                     <View style={{padding:10}}>    
                         <Text style={{fontSize:15}}> Pesanan : </Text>
-                        {/* item yang dibeli*/}
-                        <View style={styles.wrapper}>
+                        {orderitem.map(item =>(
+                          <View style={styles.wrapper} key={item.id}>
                             <View>
-                                <Image style={styles.cover} source={{uri:'https://keeprecipes.com/sites/keeprecipes/files/104127_1419594390_0.jpg'}}></Image>
+                                <Image style={styles.cover} source={{uri:item.gambar}}></Image>
                             </View>
                             <View style={{margin:5,justifyContent:'space-around'}}>
-                                <Text style={{fontSize:20,fontWeight:'bold',marginHorizontal:10}}>Ayam Goreng</Text>
+                                <Text style={{fontSize:20,fontWeight:'bold',marginHorizontal:10}}>{item.nama_produk}</Text>
                                 
                                 <View style={{flexDirection:'row'}}>
-                                    <Text style={{fontSize:15, marginTop:3}}> x 10 </Text>
+                                    <Text style={{fontSize:15, marginTop:3}}> x {item.qty} </Text>
                                 </View>
                             </View>
                         </View>
+                        ))}
                     </View>
                     <View style={{justifyContent:'center',borderRadius:20,padding:20}}>
                         <Button title="Buat Pesanan baru" color="orange" onPress={() => {navigation.navigate('Menu')}}/>
