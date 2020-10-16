@@ -12,6 +12,8 @@ target 'WebviewTest' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+
   target 'WebviewTestTests' do
     inherit! :complete
     # Pods for testing

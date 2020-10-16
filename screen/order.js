@@ -20,7 +20,6 @@ const order = ({navigation}) => {
             if(result.data.status == true)
             {
                 setData(result.data.result);
-                console.log(data);
             } 
             else 
             {
@@ -39,7 +38,6 @@ const order = ({navigation}) => {
             if(result.data.status == true)
             {
                 setData(result.data.result);
-                console.log(data);
             } 
             else 
             {

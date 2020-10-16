@@ -1,15 +1,17 @@
 import React, {useState,useEffect} from 'react'
-import { StyleSheet, Text, View, Image, Button } from 'react-native'
+import { StyleSheet, Text, View, Image, Button, Alert } from 'react-native'
 import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-community/async-storage'
 import api from './api/index'
 import Cartitem from './components/cartitem';
 import NumberFormat from 'react-number-format'
+import DocumentPicker from 'react-native-document-picker';
 
 const orderdetail = ({navigation}) => {
     const id = navigation.state.params.id
     const [data, setData] = useState({})
     const [orderitem, setOrderitem] = useState([])
+    const [singleFile, setSingleFile] = useState(null);
 
     useEffect(() => {
         
@@ -23,6 +25,85 @@ const orderdetail = ({navigation}) => {
 
         fetchData();
     }, []);
+
+    const ambildata = async () => {
+        const value = await AsyncStorage.getItem('userdata')
+        const userdata = JSON.parse(value);
+        const result = await api.get('/get-order-detail.php?user_id='+userdata.id+'&order_id='+id);
+        setData(result.data.result);
+        setOrderitem(result.data.result.orderItems)
+    };
+
+  const uploadImage = async ({id}) => {
+    //Check if any file is selected or not
+    if (singleFile != null) 
+    {   
+        try {
+            const value = await AsyncStorage.getItem('userdata');
+            const userdata = JSON.parse(value);
+            const fileToUpload = singleFile;
+
+            const formData = new FormData();
+            formData.append("user_id", userdata.id);
+            formData.append("order_id", id);
+            formData.append("gambar",  fileToUpload);
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Accept': "application/x-www-form-urlencoded",
+                    'Accept': 'application/json'
+                },
+            };
+            const response = await api.post('/upload-bukti.php', formData, config);
+            if(response.data.status == true)
+            {
+                ambildata()
+                alert(response.data.message);
+            }
+            else {
+                alert(response.data.message);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    else {
+        alert('Please Select File first');
+    }
+
+  };
+
+  const selectFile = async () => {
+    //Opening Document Picker to select one file
+    try {
+      const res = await DocumentPicker.pick({
+        //Provide which type of file you want user to pick
+        type: [DocumentPicker.types.images],
+        //There can me more options as well
+        // DocumentPicker.types.allFiles
+        // DocumentPicker.types.images
+        // DocumentPicker.types.plainText
+        // DocumentPicker.types.audio
+        // DocumentPicker.types.pdf
+      });
+      //Printing the log realted to the file
+      console.log('res : ' + JSON.stringify(res));
+      //Setting the state to show single file attributes
+      setSingleFile(res);
+    } catch (err) {
+      setSingleFile(null);
+      //Handling any exception (If any)
+      if (DocumentPicker.isCancel(err)) {
+        //If user canceled the document selection
+        alert('Canceled from single doc picker');
+      } else {
+        //For Unknown Error
+        alert('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
 
     return (
         <View style={styles.container}>
@@ -72,18 +153,29 @@ const orderdetail = ({navigation}) => {
                         }/>
                     </Text>
                     {data.status == 'Pending' ? 
-                        <View>
-                            <Text style={{fontSize:20}}>Upload Bukti Tranfer : </Text>
-                             <TouchableOpacity
-                            style={{backgroundColor: 'orange', margin: 10, padding: 10}}
-                            onPress={this.myfun}>
-                            <Text style={{color: '#fff'}}>Pilih Image</Text>
+                         <View style={styles.container}>
+                             <Text style={{fontSize:20,fontWeight:'bold'}}>Upload Bukti Transfer : </Text>
+                            {singleFile != null ? (
+                                <Text style={styles.textStyle}>
+                                {singleFile.name ? singleFile.name : ''}
+                                </Text>
+                            ) : null}
+                            <TouchableOpacity
+                                style={styles.buttonStyle}
+                                activeOpacity={0.5}
+                                onPress={() => selectFile()}>
+                                <Text style={styles.buttonTextStyle}>Select File</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => uploadPic()}>
-                                <Text>Upload</Text>
-                            </TouchableOpacity> 
+                            <TouchableOpacity
+                                style={styles.buttonStyle}
+                                activeOpacity={0.5}
+                                onPress={() => uploadImage({id:data.id})}>
+                                <Text style={styles.buttonTextStyle}>Upload File</Text>
+                            </TouchableOpacity>
                         </View>
-                        : <Text></Text>}
+                                            
+                        : null
+                    }
                 </View>
             </View>
         </ScrollView>
@@ -104,9 +196,33 @@ const styles = StyleSheet.create({
     container: {
         width:'100%',
         height:'100%',
-        justifyContent: 'center',
         flex: 1, 
+        paddingVertical:10,
         backgroundColor:'white',
-        alignItems: 'center',
     },
+    buttonStyle: {
+        backgroundColor: '#307ecc',
+        borderWidth: 0,
+        color: '#FFFFFF',
+        borderColor: '#307ecc',
+        height: 40,
+        alignItems: 'center',
+        borderRadius: 30,
+        marginLeft: 35,
+        marginRight: 35,
+        marginTop: 15,
+    },
+    buttonTextStyle: {
+        color: '#FFFFFF',
+        paddingVertical: 10,
+        fontSize: 16,
+    },
+    textStyle: {
+    backgroundColor: '#fff',
+    fontSize: 15,
+    marginTop: 16,
+    marginLeft: 35,
+    marginRight: 35,
+    textAlign: 'center',
+  },
 })
