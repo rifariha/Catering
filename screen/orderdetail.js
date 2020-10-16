@@ -34,6 +34,10 @@ const orderdetail = ({navigation}) => {
         setOrderitem(result.data.result.orderItems)
     };
 
+    function refreshPage() {
+    window.location.reload(true);
+  }
+  
   const uploadImage = async ({id}) => {
     //Check if any file is selected or not
     if (singleFile != null) 
@@ -108,6 +112,7 @@ const orderdetail = ({navigation}) => {
     return (
         <View style={styles.container}>
         <ScrollView>
+            {data != null ? 
             <View>
                 <View style={{padding:10}}>
                      <Text style={{fontSize:20, fontWeight:'800'}}>Tgl.Transaksi : {data.created_at}</Text>
@@ -156,9 +161,9 @@ const orderdetail = ({navigation}) => {
                          <View style={styles.container}>
                              <Text style={{fontSize:20,fontWeight:'bold'}}>Upload Bukti Transfer : </Text>
                             {singleFile != null ? (
-                                <Text style={styles.textStyle}>
-                                {singleFile.name ? singleFile.name : ''}
-                                </Text>
+                                <View style={{alignItems:"center",justifyContent:"center"}}>
+                                    <Image source={{uri:singleFile.uri}} style={{width: 200, height: 200}} />
+                                </View>
                             ) : null}
                             <TouchableOpacity
                                 style={styles.buttonStyle}
@@ -172,12 +177,12 @@ const orderdetail = ({navigation}) => {
                                 onPress={() => uploadImage({id:data.id})}>
                                 <Text style={styles.buttonTextStyle}>Upload File</Text>
                             </TouchableOpacity>
-                        </View>
-                                            
+                        </View>         
                         : null
                     }
                 </View>
             </View>
+            : null }
         </ScrollView>
         </View>
   );
