@@ -15,7 +15,7 @@ const order = ({navigation}) => {
         const fetchData = async () => {
             const value = await AsyncStorage.getItem('userdata');
             const userdata = JSON.parse(value);
-            const result = await api.get('/get-order.php?user_id='+userdata.id+'&status=1');
+            const result = await api.get('/get-order-bystatus.php?user_id='+userdata.id+'&status=1');
             
             if(result.data.status == true)
             {

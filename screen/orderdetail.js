@@ -6,12 +6,35 @@ import api from './api/index'
 import Cartitem from './components/cartitem';
 import NumberFormat from 'react-number-format'
 import DocumentPicker from 'react-native-document-picker';
+import { navigate } from './navigationRef'
 
 const orderdetail = ({navigation}) => {
     const id = navigation.state.params.id
     const [data, setData] = useState({})
     const [orderitem, setOrderitem] = useState([])
     const [singleFile, setSingleFile] = useState(null);
+
+    confirm = ({id}) => {
+        Alert.alert(
+          'Apakah anda yakin ?',
+          'Pesanan ini akan dibatalkan ',
+          [
+            {text: 'NO', onPress: () => console.log('NO Pressed'), style: 'cancel'},
+            {text: 'YES', onPress: () => deleteOrder({id})},
+          ]
+        );
+      }
+
+    confirmTerima = ({id}) => {
+        Alert.alert(
+          'Konfirmasi Pesanan ini ?',
+          'Anda akan menyatakan telah menyelesaikan pesanan ini ',
+          [
+            {text: 'NO', onPress: () => console.log('NO Pressed'), style: 'cancel'},
+            {text: 'YES', onPress: () => confirmOrder({id})},
+          ]
+        );
+      }
 
     useEffect(() => {
         
@@ -25,7 +48,7 @@ const orderdetail = ({navigation}) => {
 
         fetchData();
     }, []);
-
+    
     const ambildata = async () => {
         const value = await AsyncStorage.getItem('userdata')
         const userdata = JSON.parse(value);
@@ -34,9 +57,45 @@ const orderdetail = ({navigation}) => {
         setOrderitem(result.data.result.orderItems)
     };
 
-    function refreshPage() {
-    window.location.reload(true);
-  }
+    const deleteOrder = async({id}) => {
+        try {
+            const value = await AsyncStorage.getItem('userdata')
+            const userdata = JSON.parse(value);
+            const formData = new FormData();
+            formData.append("user_id", userdata.id);
+            formData.append("order_id", id);
+            const response = await api.post('/batalkan-pesanan.php', formData);
+            console.log(id);
+            console.log(response.data.status);
+            if (response.data.status == true) {
+                alert(response.data.message);
+                navigate('Order')
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const confirmOrder = async({id}) => {
+        try {
+            const value = await AsyncStorage.getItem('userdata')
+            const userdata = JSON.parse(value);
+            const formData = new FormData();
+            formData.append("user_id", userdata.id);
+            formData.append("order_id", id);
+            const response = await api.post('/pesanan-diterima.php', formData);
+            console.log(id);
+            console.log(response.data.status);
+            if (response.data.status == true) {
+                alert(response.data.message);
+                navigate('Order')
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
   
   const uploadImage = async ({id}) => {
     //Check if any file is selected or not
@@ -169,13 +228,41 @@ const orderdetail = ({navigation}) => {
                                 style={styles.buttonStyle}
                                 activeOpacity={0.5}
                                 onPress={() => selectFile()}>
-                                <Text style={styles.buttonTextStyle}>Select File</Text>
+                                <Text style={styles.buttonTextStyle}>Pilih Foto</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.buttonStyle}
                                 activeOpacity={0.5}
                                 onPress={() => uploadImage({id:data.id})}>
-                                <Text style={styles.buttonTextStyle}>Upload File</Text>
+                                <Text style={styles.buttonTextStyle}>Upload</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.buttonCancelStyle}
+                                activeOpacity={0.5}
+                                onPress={() => this.confirm({id:data.id})}>
+                                <Text style={styles.buttonTextStyle}>Batalkan Pesanan</Text>
+                            </TouchableOpacity>
+                        </View>         
+                        : null
+                    }
+
+                    {data.status == 'Diproses' ? 
+                         <View style={styles.container}>
+                             <Text style={{fontSize:20,fontWeight:'bold'}}>Bukti Transfer : </Text>
+                            <View style={{alignItems:"center",justifyContent:"center"}}>
+                                <Image source={{uri:data.bukti_transfer}} style={{width: 200, height: 200}} />
+                            </View>
+                        </View>         
+                        : null
+                    }
+
+                    {data.status == 'Diantar' ? 
+                         <View style={styles.container}>
+                             <TouchableOpacity
+                                style={styles.buttonConfirmStyle}
+                                activeOpacity={0.5}
+                                onPress={() => this.confirmTerima({id:data.id})}>
+                                <Text style={styles.buttonTextStyle}>Konfirmasi Pesanan Diterima</Text>
                             </TouchableOpacity>
                         </View>         
                         : null
@@ -216,6 +303,30 @@ const styles = StyleSheet.create({
         marginLeft: 35,
         marginRight: 35,
         marginTop: 15,
+    },
+    buttonCancelStyle: {
+        backgroundColor: 'red',
+        borderWidth: 0,
+        color: '#FFFFFF',
+        borderColor: 'red',
+        height: 40,
+        alignItems: 'center',
+        borderRadius: 30,
+        marginLeft: 35,
+        marginRight: 35,
+        marginTop: 30,
+    },
+    buttonConfirmStyle: {
+        backgroundColor: 'green',
+        borderWidth: 0,
+        color: '#FFFFFF',
+        borderColor: 'green',
+        height: 40,
+        alignItems: 'center',
+        borderRadius: 30,
+        marginLeft: 35,
+        marginRight: 35,
+        marginTop: 30,
     },
     buttonTextStyle: {
         color: '#FFFFFF',
