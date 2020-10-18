@@ -49,7 +49,7 @@ const detail = ({navigation}) => {
         <ScrollView>
             <View>
                     <View>
-                        <Image style={{width: '100%',height:undefined, aspectRatio:1}} source={{uri:'https://keeprecipes.com/sites/keeprecipes/files/104127_1419594390_0.jpg'}}></Image>
+                        <Image style={{width: '100%',height:undefined, aspectRatio:1}} source={data.gambar}></Image>
                     </View>
                     <View>
                         <Text style={{margin:10,paddingVertical:10,fontSize:32,fontWeight:'bold'}}>{data.nama_produk}</Text>

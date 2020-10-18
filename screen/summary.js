@@ -15,14 +15,17 @@ const summary = ({navigation}) => {
     const readData = async () => {
         try {
             const value = await AsyncStorage.getItem('ordersummary')
+            console.log(value)
             const orderdata = JSON.parse(value);
-            setData(orderdata)
-            setOrderitem(orderdata.orderItems)
-            setRekening(orderdata.rekening)
-            console.log(orderitem)
+            if(orderdata != null)
+            {
+                setData(orderdata)
+                setOrderitem(orderdata.orderItems)
+                setRekening(orderdata.rekening)
+            } 
         } catch (e) {
             console.log(e)
-            alert('Failed to fetch the data from storage')
+            alert('Terjadi kesalahan pada sistem, Silahkan coba lagi')
         }
     }
 
@@ -33,6 +36,7 @@ const summary = ({navigation}) => {
     return (
         <View>
             <ScrollView>
+                {data != null ? 
                 <View style={{backgroundColor:'white',borderRadius:10, margin:10,padding:5,elevation:2}}>
                     <View style={{padding:10}}>
                         <Text style={{fontSize:15}}>No. Invoice : </Text>
@@ -75,12 +79,10 @@ const summary = ({navigation}) => {
                         ))}
                     </View>
                     <View style={{justifyContent:'center',borderRadius:20,padding:20}}>
-                        <Button title="Buat Pesanan baru" color="orange" onPress={() => {navigation.navigate('Menu')}}/>
-                    </View>
-                    <View style={{justifyContent:'center',borderRadius:20,paddingHorizontal:20,paddingTop:5,paddingBottom:20}}>
-                        <Button title="Upload Bukti Transfer" color="green" onPress={() => {navigation.navigate('Menu')}}/>
+                        <Button title="Buat Pesanan baru" color="orange" onPress={() => {navigation.navigate('DaftarMenu')}}/>
                     </View>
                 </View>
+                : null }
             </ScrollView>
         </View>
     )

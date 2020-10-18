@@ -14,7 +14,6 @@ const keranjang = ({navigation}) => {
     const [promo, setPromo] = useState('');
     const [refreshing, setRefreshing] = useState(false);
 
-
     confirm = ({id, name, quantity}) => {
         Alert.alert(
           'Apakah anda yakin menghapus item ini ?',

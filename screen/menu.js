@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import Food from './components/food'
 import api from './api/index'
 import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler'
+
 const menu = ({navigation}) => {
     
     const [data, setData] = useState([]);

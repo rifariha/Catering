@@ -10,6 +10,7 @@ import OrderScreen from './screen/order';
 import CheckoutScreen from './screen/checkout';
 import SummaryScreen from './screen/summary';
 import OrderDetailScreen from './screen/orderdetail';
+import ProfileScreen from './screen/profileupdate';
 import Icon from 'react-native-vector-icons/Feather'
 
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
@@ -66,6 +67,7 @@ const switchNavigator = createSwitchNavigator({
     Account : {
       screen: createStackNavigator({
         Account : AccountScreen,
+        UpdateProfile : ProfileScreen,
       }),
       navigationOptions: {
         tabBarLabel: 'Account',
