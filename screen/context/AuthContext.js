@@ -60,7 +60,7 @@ const signup = (dispatch) => async ({ email, name, password, passwordConfirmatio
             navigate('Signin');
         }
     } catch (error) {
-
+        alert(error);
         console.log(error);
         dispatch({ type: 'add_error', payload: 'Kesalahan dalam pendaftaran, silahkan coba lagi' })
     }
@@ -83,6 +83,7 @@ const signin = (dispatch) => async ({ email, password }) => {
         navigate('Menu');
     } catch (error) {
         console.log(error);
+        alert(error);
         dispatch({ type: 'add_error', payload: 'Akun anda tidak ditemukan' })
     }
 }

@@ -178,6 +178,30 @@ android {
 
         }
     }
+
+    signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+    // signingConfigs {
+    //     release {
+    //         storeFile file('your_key_name.keystore')
+    //         storePassword System.console().readLine("\nKeystore password:123456")
+    //         keyAlias System.console().readLine("\nAlias:your_key_alias")
+    //         keyPassword System.console().readLine("\nAlias password:123456")
+    //     }
+    // }
 }
 
 dependencies {

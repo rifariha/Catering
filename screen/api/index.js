@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'http://localhost:3000/api-chatring/api'
+    baseURL: 'http://catering.alimamaku.com/api'
 })
