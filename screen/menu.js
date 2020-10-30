@@ -1,7 +1,8 @@
 import React,{useState,useEffect} from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import Food from './components/food'
 import api from './api/index'
+import FloatingButton from './components/chatbutton';
 import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 
 const menu = ({navigation}) => {
@@ -30,7 +31,7 @@ const menu = ({navigation}) => {
         };
 
     return (
-        <View style={{backgroundColor:"#ecf0f1"}}>
+        <View style={{backgroundColor:"#ecf0f1",flex:2}}>
             <View style={{flexDirection:'row', alignItems:"center",justifyContent:'center',backgroundColor:'white',padding:10,margin:10,elevation:1}}>
                 {kategori.map(item => (
                     <TouchableOpacity style={{paddingHorizontal:5}} key={item.id} onPress={() => fetchOtherCategory(item.id)}>
@@ -65,6 +66,8 @@ const menu = ({navigation}) => {
                     <Food nama='Cumi Goreng Tepung' gambar='https://www.resepistimewa.com/wp-content/uploads/cumi-goreng-tepung.jpg'></Food> */}
                 </View>
             </ScrollView>
+                
+            <FloatingButton/>
         </View>
     )
 }
@@ -86,6 +89,7 @@ const styles = StyleSheet.create({
         flexWrap:'wrap',
         marginBottom: 80,
         backgroundColor:'#ecf0f1',
+        flex:1
     },
     textStyle: {
         fontSize: 20,
@@ -94,5 +98,10 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         padding: 10,
         margin: 10,
-    }
+    },
+    floatinBtn: {
+        position: 'absolute',
+        bottom: 20,
+        right: 10,
+  }
 })

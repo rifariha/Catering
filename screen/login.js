@@ -20,7 +20,8 @@ const login = ({navigation}) => {
                             <Image source={logo} style={styles.logo}></Image>
                             <View style={{flexDirection:'column', justifyContent:'center'}}>
                                 <Text style={styles.textLogin}>Welcome,</Text>
-                                <Text style={styles.textLogin}>Mari Makan</Text>
+                                <Text style={styles.textLogin}>Sinar Minang</Text>
+                                <Text style={styles.textLogin}>Catering</Text>
                             </View>
                         </View>     
                         <View style={styles.card}>
@@ -88,14 +89,13 @@ const styles = StyleSheet.create({
         opacity: 0.2,
         height:'110%',
         width:'100%',
-        'alignItems' :'center'
+        alignItems :'center'
     },
     textLogin : {
         fontSize:30,
-        textAlign:'center',
+        textAlign:'left',
         fontFamily: 'Raleway-Bold',
         fontWeight:'bold'
-        
     },
     textHeader:{
         color:'black',

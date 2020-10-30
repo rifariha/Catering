@@ -4,6 +4,7 @@ import { ScrollView, TouchableOpacity} from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-community/async-storage'
 import api from './api/index'
 import PriceFormat from './components/priceformat';
+import FloatingButton from './components/chatbutton';
 
 
 const detail = ({navigation}) => {
@@ -61,6 +62,7 @@ const detail = ({navigation}) => {
                     </View>
             </View>
         </ScrollView>
+         <FloatingButton/>
         </View>
   );
 }
@@ -83,4 +85,5 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         alignItems: 'center',
     },
+
 })
