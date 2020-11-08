@@ -14,6 +14,7 @@ const detail = ({navigation}) => {
     useEffect(() => {
         const fetchData = async () => {
         const result = await api.get('/get-menu-detail.php?id='+id);
+            console.log(result.data.result)
             setData(result.data.result);
         };
 
@@ -25,7 +26,6 @@ const detail = ({navigation}) => {
         {
             const value = await AsyncStorage.getItem('userdata')
             const userdata = JSON.parse(value);
-            // console.log(userdata.email);
 
             const formData = new FormData();
             formData.append("menu_id", id);
@@ -50,7 +50,7 @@ const detail = ({navigation}) => {
         <ScrollView>
             <View>
                     <View>
-                        <Image style={{width: '100%',height:undefined, aspectRatio:1}} source={data.gambar}></Image>
+                        <Image style={{width: '100%',height:undefined, aspectRatio:1}} source={{ uri: data.gambar }}></Image>
                     </View>
                     <View>
                         <Text style={{margin:10,paddingVertical:10,fontSize:32,fontWeight:'bold'}}>{data.nama_produk}</Text>

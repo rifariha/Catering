@@ -27,12 +27,14 @@ const menu = ({navigation}) => {
 
     const fetchOtherCategory = async (id) => {
         const result = await api.get('/get-menu-bykategori.php?kategori='+id);
+            console.log(result.data.result)
             setData(result.data.result);
         };
 
     return (
         <View style={{backgroundColor:"#ecf0f1",flex:2}}>
             <View style={{flexDirection:'row', alignItems:"center",justifyContent:'center',backgroundColor:'white',padding:10,margin:10,elevation:1}}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 {kategori.map(item => (
                     <TouchableOpacity style={{paddingHorizontal:5}} key={item.id} onPress={() => fetchOtherCategory(item.id)}>
                         <View style={{backgroundColor:'#ecf0f1', borderRadius:20,}}>
@@ -41,30 +43,21 @@ const menu = ({navigation}) => {
                     </TouchableOpacity>
                 ))
                 }
-                
+            </ScrollView>
             </View>
             <ScrollView>
+                    {data == null ?  
+                        <Text style={{fontSize: 25,fontWeight: 'bold',textAlign: 'center',color: '#444444',marginTop: 30,marginRight: 5,marginLeft: 5,padding:20}}>
+                            Makanan Tidak Tersedia</Text> :
                 <View style={styles.container}>
                     {data.map(item =>(
                         <TouchableOpacity key={item.id} onPress={() => {navigation.navigate('DetailMenu', {id: item.id,name:item.nama_produk})}}>
                             <Food nama={item.nama_produk} gambar={item.gambar}></Food>
                         </TouchableOpacity>
                     ))
-                    }
-
-                    {/* <TouchableOpacity onPress={() => navigation.navigate('DetailMenu')}>
-                        <Food nama='Soto Ayam' gambar='https://awsimages.detik.net.id/community/media/visual/2020/01/20/dab49f82-0ba0-4986-b834-fe6dba66bc52.jpeg?w=700&q=90'></Food>
-                    </TouchableOpacity> */}
-
-                    {/* <Food nama='Sambal Ikan Dencis' gambar='https://img-global.cpcdn.com/recipes/714aeff14f019f83/751x532cq70/sambal-ikan-kembung-foto-resep-utama.jpg'></Food>
-                    <Food nama='Rendang' gambar='https://i0.wp.com/resepkoki.id/wp-content/uploads/2017/11/Resep-Rendang-padang.jpg?fit=2837%2C3283&ssl=1'></Food>
-                    <Food nama='Mie Goreng' gambar='https://www.masakapahariini.com/wp-content/uploads/2018/04/cara-membuat-mie-goreng-telur-500x300.jpg'></Food>
-
-                    <Food nama='Ayam Goreng' gambar='https://keeprecipes.com/sites/keeprecipes/files/104127_1419594390_0.jpg'></Food>
-                    <Food nama='Ayam Sambal Ijo' gambar='https://craftlog.com/m/i/10531004=s1280=h960'></Food>
-                    <Food nama='Sambal Goreng Udang' gambar='https://selerasa.com/wp-content/uploads/2015/07/images_ikan_resep_udang_28-udang-sambal-pete.jpg'></Food>
-                    <Food nama='Cumi Goreng Tepung' gambar='https://www.resepistimewa.com/wp-content/uploads/cumi-goreng-tepung.jpg'></Food> */}
+                    }  
                 </View>
+                }
             </ScrollView>
                 
             <FloatingButton/>
