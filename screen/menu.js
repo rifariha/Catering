@@ -3,13 +3,17 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import Food from './components/food'
 import api from './api/index'
 import FloatingButton from './components/chatbutton';
+import NotifBar from './components/notifbar';
 import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const menu = ({navigation}) => {
     
     const [data, setData] = useState([]);
     const [kategori, setKategori] = useState([]);
- 
+    const [amountNotif, setAmountNotif] = useState();
+   
+
     useEffect(() => {
         const fetchData = async () => {
         const result = await api.get('/get-menu-bykategori.php?kategori=7');
@@ -21,7 +25,23 @@ const menu = ({navigation}) => {
             setKategori(kategori.data.result);
         };
 
+        const fetchAmountNotif = async () => {
+            const value = await AsyncStorage.getItem('userdata');
+            const userdata = JSON.parse(value);
+            const result = await api.get('/notifikasi-pesanan.php?user_id='+userdata.id);
+            
+            if(result.data.status == true)
+            {
+                setAmountNotif(result.data.count_notif);
+            }
+            else
+            {
+                setAmountNotif(0);
+            }
+        };
+
         fetchCategory();
+        fetchAmountNotif();
         fetchData();
     }, []);
 
@@ -65,9 +85,10 @@ const menu = ({navigation}) => {
     )
 }
 
-menu.navigationOptions = () =>{
+menu.navigationOptions = ({navigation}) => {
     return {
         title:'Daftar Menu',
+        headerRight : () => <NotifBar navigation={navigation}/>
     };
 }; 
 
@@ -96,5 +117,5 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
         right: 10,
-  }
+  },
 })

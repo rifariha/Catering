@@ -11,6 +11,7 @@ import CheckoutScreen from './screen/checkout';
 import SummaryScreen from './screen/summary';
 import OrderDetailScreen from './screen/orderdetail';
 import ProfileScreen from './screen/profileupdate';
+import NotificationScreen from './screen/notification';
 import Icon from 'react-native-vector-icons/Feather'
 
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'
@@ -31,6 +32,7 @@ const switchNavigator = createSwitchNavigator({
       screen: createStackNavigator({
         DaftarMenu: MenuScreen,
         DetailMenu: MenuDetailScreen,
+        NotificationMenu: NotificationScreen,
       }),
       navigationOptions: {
         tabBarLabel: 'Menu',

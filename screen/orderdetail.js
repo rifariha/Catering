@@ -10,6 +10,8 @@ import { navigate } from './navigationRef'
 
 const orderdetail = ({navigation}) => {
     const id = navigation.state.params.id
+    const read = navigation.state.params.read 
+    
     const [data, setData] = useState({})
     const [orderitem, setOrderitem] = useState([])
     const [singleFile, setSingleFile] = useState(null);
@@ -41,9 +43,18 @@ const orderdetail = ({navigation}) => {
         const fetchData = async () => {
             const value = await AsyncStorage.getItem('userdata')
             const userdata = JSON.parse(value);
-            const result = await api.get('/get-order-detail.php?user_id='+userdata.id+'&order_id='+id);
-            setData(result.data.result);
-            setOrderitem(result.data.result.orderItems)
+            if(read != 1)
+            {
+                const result = await api.get('/get-order-detail.php?user_id='+userdata.id+'&order_id='+id);
+                setData(result.data.result);
+                setOrderitem(result.data.result.orderItems)
+            }
+            else
+            {
+                const result = await api.get('/get-order-detail.php?user_id='+userdata.id+'&order_id='+id+'&read='+read);
+                setData(result.data.result);
+                setOrderitem(result.data.result.orderItems)
+            }
         };
 
         fetchData();
