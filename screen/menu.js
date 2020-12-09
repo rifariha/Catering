@@ -68,7 +68,7 @@ const menu = ({navigation}) => {
             <ScrollView>
                     {data == null ?  
                         <Text style={{fontSize: 25,fontWeight: 'bold',textAlign: 'center',color: '#444444',marginTop: 30,marginRight: 5,marginLeft: 5,padding:20}}>
-                            Makanan Tidak Tersedia</Text> :
+                            Menu Tidak Tersedia</Text> :
                 <View style={styles.container}>
                     {data.map(item =>(
                         <TouchableOpacity key={item.id} onPress={() => {navigation.navigate('DetailMenu', {id: item.id,name:item.nama_produk})}}>
