@@ -35,8 +35,7 @@ const ClearErrorMessage = dispatch => () => {
 };
 
 
-const signup = (dispatch) => async ({ email, name, password, passwordConfirmation, address, phone}) => {
-
+const signup = (dispatch) => async ({ email, name, password, passwordConfirmation, address, phone, birthDate}) => {
     if (password !== passwordConfirmation) {
         dispatch({ type: 'add_error', payload: 'Password yang anda masukan tidak sama' })
     }
@@ -47,6 +46,7 @@ const signup = (dispatch) => async ({ email, name, password, passwordConfirmatio
         formData.append("password", password);
         formData.append("nohp", phone);
         formData.append("alamat", address);
+        formData.append("tgl_lahir", birthDate);
 
         const response = await api.post('/register-user.php', formData);
         console.log(response.data.status);

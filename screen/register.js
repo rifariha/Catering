@@ -1,8 +1,9 @@
 import React , {useState, useContext} from 'react'
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, ScrollView} from 'react-native'
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity,Platform, ScrollView, Button} from 'react-native'
 import logo from '../assets/logo.png'
 import bgImage from '../assets/frontbg.jpg'
 import { Context as AuthContext} from './context/AuthContext'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const register = ({navigation}) => {
 const {state, signup} = useContext(AuthContext)
@@ -13,6 +14,44 @@ const {state, signup} = useContext(AuthContext)
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [address, setAddress] = useState('')
     const [phone, setPhone] = useState('')
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [show, setShow] = useState(false);
+    const [birthDate, setBirthDate] = useState('');
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+        
+        var isodate = getParsedDate(currentDate.toISOString())
+        handleDate(isodate)
+    };
+
+    const handleDate = (date) => {
+        setBirthDate(date)
+    }
+
+    const getParsedDate = (strDate) => {
+        var strSplitDate = String(strDate).split(' ');
+        var date = new Date(strSplitDate[0]);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; //January is 0!
+
+        var yyyy = date.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        date =  yyyy + "-" + mm + "-" + dd;
+        return date.toString();
+    }
+
+    const showDatepicker = () => {
+         setShow(true);
+    };
+
     return (
         <ScrollView>
         <View style={styles.bigContainer}>
@@ -41,13 +80,31 @@ const {state, signup} = useContext(AuthContext)
                     <TextInput style={styles.textInput} placeholder='Ulangi Password' secureTextEntry={true}
                     value={passwordConfirmation} onChangeText={setPasswordConfirmation} autoCapitalize='none' autoCorrect={false} secureTextEntry={true}
                     ></TextInput>
+                    <TouchableOpacity onPress={showDatepicker}>
+                        <View style={styles.textInputDate}>
+                            {birthDate == '' ? 
+                            <Text style={{position:'absolute',left:2,paddingTop:15,paddingLeft:5,color:'#9e9e9e'}}>Tanggal lahir</Text>
+                            : <Text style={{position:'absolute',left:2,paddingTop:15,paddingLeft:5,color:'black'}}>{birthDate}</Text>
+                            }
+                        </View>
+                        {show && (
+                            <DateTimePicker
+                            testID="dateTimePicker"
+                            value={date}
+                            mode='date'
+                            is24Hour={true}
+                            display="default"
+                            onChange={onChange}
+                            />
+                        )}
+                    </TouchableOpacity>
                     <TextInput style={styles.textInput} placeholder='No Hp'
                     value={phone} onChangeText={setPhone} keyboardType='numeric' maxLength={12} autoCapitalize='none' autoCorrect={false}
                     ></TextInput>
                     <TextInput style={styles.textAreaInput} placeholder='Alamat'
                     value={address} onChangeText={setAddress} autoCapitalize='none' autoCorrect={false}
                     ></TextInput>
-                    <TouchableOpacity style={styles.buttonWrapper} onPress={() => signup({name, email, password,passwordConfirmation, address, phone})}>
+                    <TouchableOpacity style={styles.buttonWrapper} onPress={() => signup({name, email, password,passwordConfirmation, address, phone, birthDate})}>
                         <Text style={styles.submitBtn}>Submit</Text>
                     </TouchableOpacity>
                     {state.errorMessage ? (<Text style={styles.error}>{state.errorMessage}</Text>) : null}
@@ -58,6 +115,8 @@ const {state, signup} = useContext(AuthContext)
                     </TouchableOpacity>
                     </Text>
             </View>
+
+           
         </View>
         </ScrollView>
     )
@@ -122,6 +181,19 @@ const styles = StyleSheet.create({
         height:50,
         borderRadius:5,
     },
+    textInputDate : {
+        fontSize: 13,
+        color:'#000',
+        paddingHorizontal:10,
+        paddingVertical:0,
+        fontFamily:'Raleway-Bold',
+        borderColor: 'grey',
+        borderWidth: 1,
+        margin:15,
+        height:50,
+        alignItems:'center',
+        borderRadius:5,
+    },
     textAreaInput : {
         fontSize: 13,
         color:'#000',
@@ -167,5 +239,9 @@ const styles = StyleSheet.create({
         margin:10, 
         color:'red',
         textAlign:"center"
+    },
+    datePickerStyle: {
+        width: 200,
+        marginTop: 20,
     },
 })
